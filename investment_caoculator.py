@@ -54,6 +54,7 @@ if __name__ == "__main__":
     investment_horizon = 20
     monthly_investment = 10
     initial_balance = 0
+    target_value = 1000
 
     total_balance = automatic_investment(monthly_rate(yearly_return),
                                          monthly_investment,
@@ -62,10 +63,11 @@ if __name__ == "__main__":
     total_gain = total_balance - investment_horizon * 12 * monthly_investment
 
     print(
+        f"当每月投资{monthly_investment}，\n"
+        f"预期年化收益率为{yearly_return}，\n"
         f"经过20年的总余额是： "
-        f"{total_balance:.2f} \n \
-    共盈利 "
-        f"{total_gain:.2f}")
+        f"{total_balance:.2f} \n"
+        f"总盈利：{total_gain:.2f}")
 
     # 月投资额
 
@@ -74,4 +76,7 @@ if __name__ == "__main__":
                                          monthly_rate(yearly_return),
                                          investment_horizon)
 
-    print(f"每月投资额为：{monthly_investment:.2f}")
+    print(f"当投资目标为{target_value}\n"
+          f"预期年化收益率为{yearly_return}\n"
+          f"投资期限为{investment_horizon}年时\n"
+          f"每月应投资额为：{monthly_investment:.2f}")
