@@ -10,7 +10,8 @@ def monthly_rate(yearly_rate: float):
     return pow(1 + yearly_rate, 1 / 12) - 1
 
 
-def automatic_investment(return_monthly: float, investment_monthly: float, horizon: int, initial_balance: float = 0):
+def automatic_investment(return_monthly: float, investment_monthly: float,
+                         horizon: int, initial: float = 0):
     """
     Calculate the balance after a certain period of time with a certain monthly investment and monthly return.
     suppose the investment is made at the start of each month.
@@ -19,7 +20,7 @@ def automatic_investment(return_monthly: float, investment_monthly: float, horiz
 
     """
     month_num = horizon * 12
-    balance = initial_balance + investment_monthly
+    balance = initial + investment_monthly
 
     for i in range(month_num):
         balance = balance * (1 + return_monthly) + investment_monthly
@@ -27,7 +28,7 @@ def automatic_investment(return_monthly: float, investment_monthly: float, horiz
     return balance
 
 
-def back_to_present(target: str, target_value: float, return_monthly: float, horizon: float,
+def back_to_present(target: str, value_target: float, return_monthly: float, horizon: float,
                     investment_monthly: float = 0, initial: float = 0):
     """
     Calculate the monthly investment value or expected monthly return.
@@ -38,7 +39,7 @@ def back_to_present(target: str, target_value: float, return_monthly: float, hor
     month_num = horizon * 12
 
     if target == "num":
-        monthly_num = (target_value - initial * pow(1 + return_monthly, month_num)) * \
+        monthly_num = (value_target - initial * pow(1 + return_monthly, month_num)) * \
                       return_monthly / (pow(1 + return_monthly, month_num - 1) - 1)
         return monthly_num
 
