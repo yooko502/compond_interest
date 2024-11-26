@@ -1,7 +1,6 @@
 import numpy as np
 import pandas as pd
 import math
-import scipy
 from typing import Literal
 
 
@@ -78,6 +77,12 @@ class InvestmentCalculator:
         """
         Calculate the final balance with optional periodic investment increment.
 
+        是否增加定投额的判断
+        1.是否经过了一年：(i+1) % 12 == 0
+        2.增加定投额是否为0：increment != 0
+        3.当前年限是否在增加定投额年限内：year_num <= incre_period
+        4.判断是否为第一年，第一年不进行增加定投额的操作，增加定投额从第二年开始：year_num != 0
+
         Parameters:
             No parameters.
 
@@ -92,8 +97,10 @@ class InvestmentCalculator:
         for i in range(month_num):
             year_num = i // 12
 
+            # Apply increment to monthly investment or not
             if (i + 1) % 12 == 0 and self.__increment != 0 and \
                     year_num <= self.__increment_period and year_num != 0:
+
                 current_monthly_investment += self.__increment
 
             balance = balance * (1 + monthly_return) + current_monthly_investment
