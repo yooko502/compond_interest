@@ -22,7 +22,7 @@ class InvestmentCalculator:
                  horizon: int,
                  m_investment: float,
                  init_balance: float = 0,
-                 method: Literal["geometric", "arithmetic"] = "geometric",
+                 method: Literal["geometric", "arithmetic", "geo", "arith"] = "geometric",
                  increment: float = 0,
                  incre_period: int = 0):
 
@@ -35,8 +35,8 @@ class InvestmentCalculator:
             raise ValueError("Monthly investment cannot be negative")
         if init_balance < 0:
             raise ValueError("Initial balance cannot be negative")
-        if method not in ["geometric", "arithmetic"]:
-            raise ValueError("Method must be either 'geometric' or 'arithmetic'")
+        if method not in ["geometric", "arithmetic", "geo", "arith"]:
+            raise ValueError("Method must be either 'geometric' or 'geo' or 'arithmetic' or 'arith'")
         if not isinstance(increment, (int, float)):
             raise ValueError("Increment amount must be a number")
         if incre_period < 0:
@@ -68,14 +68,18 @@ class InvestmentCalculator:
 
     @property
     def monthly_return(self) -> float:
-        if self.__method == "geometric":
+        if self.__method == "geometric" or self.__method == "geo":
             return pow(1 + self.y_return, 1 / 12) - 1
-        elif self.__method == "arithmetic":
+        elif self.__method == "arithmetic" or self.__method == "arith":
             return self.y_return / 12
 
     def automatic_investment(self) -> float:
         """
         Calculate the final balance with optional periodic investment increment.
+
+        假设在每个月的月初进行定投，每月定投额为m_investment，年收益率为y_return，投资期为horizon年。
+        因此，每个月月初的余额计算公式为：balance = balance * (1 + monthly_return) + m_investment
+        这里，balance为上个月月初的余额，这一部分会享受一整个月的收益。
 
         是否增加定投额的判断
         1.是否经过了一年：(i+1) % 12 == 0
@@ -168,7 +172,9 @@ if __name__ == "__main__":
         # 计算达到目标所需的每月投资额
         target_value = 100000
         required_monthly = calc.back_to_present("num", target_value)
-        print(f"Required monthly investment to reach {target_value}: {required_monthly:.2f}")
+        print(f"Required monthly investment to reach {target_value} "
+              f"with {calc.y_return} yearly return"
+              f"and {calc.init_balance} initial balance : {required_monthly:.2f}")
 
         # 计算达到目标所需的月收益率
         required_return = calc.back_to_present("rate", target_value)
