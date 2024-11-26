@@ -1,7 +1,17 @@
 import numpy as np
+from dataclasses import dataclass
 import pandas as pd
 import math
-from typing import Literal
+from typing import Literal, Dict, Optional
+
+
+@dataclass
+class InvestmentResult:
+    """investment result dataclass"""
+    final_balance: float
+    total_principal: float
+    total_return: float
+    monthly_data: pd.DataFrame
 
 
 class InvestmentCalculator:
@@ -27,51 +37,63 @@ class InvestmentCalculator:
                  incre_period: int = 0):
 
         # Input validation
-        if y_return < -1:
-            raise ValueError("Yearly return rate cannot be less than -100%")
-        if horizon <= 0:
-            raise ValueError("Investment horizon must be positive")
-        if m_investment < 0:
-            raise ValueError("Monthly investment cannot be negative")
-        if init_balance < 0:
-            raise ValueError("Initial balance cannot be negative")
-        if method not in ["geometric", "arithmetic", "geo", "arith"]:
-            raise ValueError("Method must be either 'geometric' or 'geo' or 'arithmetic' or 'arith'")
-        if not isinstance(increment, (int, float)):
-            raise ValueError("Increment amount must be a number")
-        if incre_period < 0:
-            raise ValueError("Increment period cannot be negative")
+        self._validate_inputs(locals())
 
-        self.__y_return = y_return
-        self.__horizon = horizon
-        self.__m_investment = m_investment
-        self.__init_balance = init_balance
-        self.__method = method
-        self.__increment = increment
-        self.__increment_period = incre_period
+        # Protected attributes in this class (suggest to use in subclasses and this class)
+        self._y_return = y_return
+        self._horizon = horizon
+        self._m_investment = m_investment
+        self._init_balance = init_balance
+        self._method = method
+        self._increment = increment
+        self._increment_period = incre_period
+
+        # Protected attributes to be used in this class only
+        self.__monthly_return = self._calculate_monthly_return()
 
     @property
     def y_return(self) -> float:
-        return self.__y_return
+        """yearly return rate"""
+        return self._y_return
 
     @property
     def horizon(self) -> int:
-        return self.__horizon
+        """investment horizon in years"""
+        return self._horizon
 
     @property
     def m_investment(self) -> float:
-        return self.__m_investment
+        """monthly investment amount"""
+        return self._m_investment
 
     @property
     def init_balance(self) -> float:
-        return self.__init_balance
+        """initial balance"""
+        return self._init_balance
 
-    @property
-    def monthly_return(self) -> float:
-        if self.__method == "geometric" or self.__method == "geo":
+    def _calculate_monthly_return(self) -> float:
+        """Calculate the monthly return of an expected yearly return."""
+        if self._method == "geometric" or self._method == "geo":
             return pow(1 + self.y_return, 1 / 12) - 1
-        elif self.__method == "arithmetic" or self.__method == "arith":
+        elif self._method == "arithmetic" or self._method == "arith":
             return self.y_return / 12
+
+    def _validate_inputs(self, params: Dict) -> None:
+        """Validate input parameters."""
+        if params['y_return'] < -1:
+            raise ValueError("Yearly return rate cannot be less than -100%")
+        if params['horizon'] <= 0:
+            raise ValueError("Investment horizon must be positive")
+        if params['m_investment'] < 0:
+            raise ValueError("Monthly investment cannot be negative")
+        if params['init_balance'] < 0:
+            raise ValueError("Initial balance cannot be negative")
+        if params['method'] not in ["geometric", "arithmetic"]:
+            raise ValueError("Method must be either 'geometric' or 'arithmetic'")
+        if not isinstance(params['increment'], (int, float)):
+            raise ValueError("Increment amount must be a number")
+        if params['incre_period'] < 0:
+            raise ValueError("Increment period cannot be negative")
 
     def automatic_investment(self) -> float:
         """
@@ -96,16 +118,15 @@ class InvestmentCalculator:
         month_num = self.horizon * 12
         balance = self.init_balance + self.m_investment
         current_monthly_investment = self.m_investment
-        monthly_return = self.monthly_return
+        monthly_return = self._calculate_monthly_return
 
         for i in range(month_num):
             year_num = i // 12
 
             # Apply increment to monthly investment or not
-            if (i + 1) % 12 == 0 and self.__increment != 0 and \
-                    year_num <= self.__increment_period and year_num != 0:
-
-                current_monthly_investment += self.__increment
+            if (i + 1) % 12 == 0 and self._increment != 0 and \
+                    year_num <= self._increment_period and year_num != 0:
+                current_monthly_investment += self._increment
 
             balance = balance * (1 + monthly_return) + current_monthly_investment
 
@@ -132,7 +153,7 @@ class InvestmentCalculator:
 
         if target == "num":
             # Calculate required monthly investment
-            monthly_return = self.monthly_return
+            monthly_return = self._calculate_monthly_return
             numerator = (value_target - self.init_balance * pow(1 + monthly_return, month_num))
             denominator = (pow(1 + monthly_return, month_num) - 1) / monthly_return
             return numerator / denominator
