@@ -8,6 +8,21 @@ export default {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+	colors: {
+        primary: {
+			50: '#fbf6fe',
+			100: '#f5ebfc',
+			200: '#ecdbf9',
+			300: '#d5adf0',
+			400: '#ca95eb',
+			500: '#b46ddf',
+			600: '#a04ecf',
+			700: '#893bb5',
+			800: '#743594',
+			900: '#5e2c77',
+			950: '#401556',
+		  },
+	},
   	extend: {
   		colors: {
   			background: 'hsl(var(--background))',
