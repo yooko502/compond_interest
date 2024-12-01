@@ -11,19 +11,19 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
-export default function FixedInvestmentCard() {
+export default function WithdrawalCard() {
   return (
     <Card className="p-6 bg-primary-50">
           <CardHeader>
-            <CardTitle>将来いくらになるかを知りたい</CardTitle>
+            <CardTitle>利回り</CardTitle>
             <CardDescription>
-              つみたて投資すると将来いくらになる？
+              目標額を達成するための利回りを計算する
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
             <div className="space-y-1">
-              <Label htmlFor="initial_investment">初期投資額</Label>
-              <Input id="initial_investment" defaultValue="10" />
+              <Label htmlFor="target_amount">目標額</Label>
+              <Input id="target_amount" defaultValue="1000" />
             </div>
             <div className="space-y-1">
               <Label htmlFor="monthly_reserve">毎月の積立額</Label>
@@ -32,10 +32,6 @@ export default function FixedInvestmentCard() {
             <div className="space-y-1">
               <Label htmlFor="reserve_periods">積立期間</Label>
               <Input id="reserve_periods" defaultValue="10" />
-            </div>
-            <div className="space-y-1">
-              <Label htmlFor="year_return">想定リターン（年率）</Label>
-              <Input id="year_return" defaultValue="10" />
             </div>
           </CardContent>
           <CardFooter>
