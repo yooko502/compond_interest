@@ -37,6 +37,14 @@ export default function FixedInvestmentCard() {
               <Label htmlFor="year_return">想定リターン（年率）</Label>
               <Input id="year_return" defaultValue="10" />
             </div>
+            <div className="space-y-1">
+              <Label htmlFor="increment">毎年増加金額</Label>
+              <Input id="increment" defaultValue="0" />
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="incre_period">増分を適用する年数</Label>
+              <Input id="incre_period" defaultValue="0" />
+            </div>
           </CardContent>
           <CardFooter>
             <Button>計算する</Button>
