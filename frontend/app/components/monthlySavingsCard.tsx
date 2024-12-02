@@ -23,17 +23,17 @@ import { Label } from "@/components/ui/label"
 
 const WithdrawalFormSchema = z.object({
     target_amount: z.string().min(0),
-    monthly_reserve: z.string().min(0),
-    reserve_periods: z.string().min(0)
+    reserve_periods: z.string().min(0),
+    year_return: z.string().min(0)
 })
 
-export default function WithdrawalCard() {
+export default function MonthlySavingsCard() {
     const form = useForm<z.infer<typeof WithdrawalFormSchema>>({
         resolver: zodResolver(WithdrawalFormSchema),
         defaultValues: {
             target_amount: "1000",
-            monthly_reserve: "10",
-            reserve_periods: "10"
+            reserve_periods: "10",
+            year_return: "10"
         },
       })
     const onSubmit = (values: z.infer<typeof WithdrawalFormSchema>) => {
@@ -43,9 +43,9 @@ export default function WithdrawalCard() {
     return (
         <Card className="p-6 bg-primary-50">
             <CardHeader>
-                <CardTitle>利回り</CardTitle>
+                <CardTitle>毎月積立額</CardTitle>
                 <CardDescription>
-                目標額を達成するための利回りを計算する
+                目標額を達成するための毎月積立額を計算する
                 </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
@@ -69,22 +69,6 @@ export default function WithdrawalCard() {
                         />
                         <FormField
                             control={form.control}
-                            name="monthly_reserve"
-                            render={({ field }) => (
-                                <FormItem>
-                                <FormLabel>毎月の積立額</FormLabel>
-                                <div className="flex w-full max-w-5xl mx-auto items-center space-x-2">
-                                    <FormControl>
-                                        <Input {...field} />
-                                    </FormControl>
-                                    <Label>万円</Label>
-                                </div>
-                                <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
                             name="reserve_periods"
                             render={({ field }) => (
                                 <FormItem>
@@ -94,6 +78,22 @@ export default function WithdrawalCard() {
                                         <Input {...field} />
                                     </FormControl>
                                     <Label>年</Label>
+                                </div>
+                                <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="year_return"
+                            render={({ field }) => (
+                                <FormItem>
+                                <FormLabel>想定リターン（年率）</FormLabel>
+                                <div className="flex w-full max-w-5xl mx-auto items-center space-x-2">
+                                    <FormControl>
+                                        <Input {...field} />
+                                    </FormControl>
+                                    <Label>%</Label>
                                 </div>
                                 <FormMessage />
                                 </FormItem>
