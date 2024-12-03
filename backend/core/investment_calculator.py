@@ -128,7 +128,7 @@ class InvestmentCalculator:
         returns = np.zeros(month_num+1)  # 投资收益
 
         """setting initial value"""
-
+        """初始余额设置为0的情况下，会默认为每月定投额"""
         balances[0] = self.init_balance
         principals[0] = self.init_balance
 
