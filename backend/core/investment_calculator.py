@@ -14,6 +14,24 @@ class InvestmentResult:
     monthly_data: pd.DataFrame
 
 
+def _validate_inputs(params: Dict) -> None:
+    """Validate input parameters."""
+    if params['y_return'] < -1:
+        raise ValueError("Yearly return rate cannot be less than -100%")
+    if params['horizon'] <= 0:
+        raise ValueError("Investment horizon must be positive")
+    if params['m_investment'] < 0:
+        raise ValueError("Monthly investment cannot be negative")
+    if params['init_balance'] < 0:
+        raise ValueError("Initial balance cannot be negative")
+    if params['method'] not in ["geometric", "arithmetic"]:
+        raise ValueError("Method must be either 'geometric' or 'arithmetic'")
+    if not isinstance(params['increment'], (int, float)):
+        raise ValueError("Increment amount must be a number")
+    if params['incre_period'] < 0:
+        raise ValueError("Increment period cannot be negative")
+
+
 class InvestmentCalculator:
     """
     A class to calculate the investment return and investment plan.
@@ -37,7 +55,7 @@ class InvestmentCalculator:
                  incre_period: int = 0):
 
         # Input validation
-        self._validate_inputs(locals())
+        _validate_inputs(locals())
 
         # Protected attributes in this class (suggest to use in subclasses and this class)
         self._y_return = y_return
@@ -77,23 +95,6 @@ class InvestmentCalculator:
             return pow(1 + self.y_return, 1 / 12) - 1
         elif self._method == "arithmetic" or self._method == "arith":
             return self.y_return / 12
-
-    def _validate_inputs(self, params: Dict) -> None:
-        """Validate input parameters."""
-        if params['y_return'] < -1:
-            raise ValueError("Yearly return rate cannot be less than -100%")
-        if params['horizon'] <= 0:
-            raise ValueError("Investment horizon must be positive")
-        if params['m_investment'] < 0:
-            raise ValueError("Monthly investment cannot be negative")
-        if params['init_balance'] < 0:
-            raise ValueError("Initial balance cannot be negative")
-        if params['method'] not in ["geometric", "arithmetic"]:
-            raise ValueError("Method must be either 'geometric' or 'arithmetic'")
-        if not isinstance(params['increment'], (int, float)):
-            raise ValueError("Increment amount must be a number")
-        if params['incre_period'] < 0:
-            raise ValueError("Increment period cannot be negative")
 
     def automatic_investment(self) -> InvestmentResult:
         """
