@@ -22,7 +22,7 @@ class InvestmentCalculator:
         y_return (float): Yearly return rate (as decimal, e.g., 0.1 for 10%)
         horizon (int): Investment horizon in years
         m_investment (float): Monthly investment amount
-        init_balance (float): Initial balance (default: 0)
+        init_balance (float): Initial balance (default: monthly investment)
         method (str): Method to calculate monthly return - "geometric" or "arithmetic" (default: "geometric")
         increment (float): Annual increment to monthly investment. Defaults to 0.
         incre_period (int): Number of years to apply increment. Defaults to 0.
@@ -43,7 +43,7 @@ class InvestmentCalculator:
         self._y_return = y_return
         self._horizon = horizon
         self._m_investment = m_investment
-        self._init_balance = init_balance
+        self._init_balance = m_investment if init_balance == 0 else init_balance
         self._method = method
         self._increment = increment
         self._increment_period = incre_period
@@ -95,7 +95,7 @@ class InvestmentCalculator:
         if params['incre_period'] < 0:
             raise ValueError("Increment period cannot be negative")
 
-    def automatic_investment(self) -> float:
+    def automatic_investment(self) -> InvestmentResult:
         """
         Calculate the final balance with optional periodic investment increment.
 
@@ -115,10 +115,21 @@ class InvestmentCalculator:
         Returns:
             float: Final balance after investment horizon.
         """
+
+        """计算投资期数以及设置当前月投资额"""
         month_num = self.horizon * 12
-        balance = self.init_balance + self.m_investment
         current_monthly_investment = self.m_investment
-        monthly_return = self._calculate_monthly_return
+
+        """initial data array"""
+        """第一个元素为初始值，后续元素开始依次为投资一个月，两个月，三个月……时的月初时候的数值"""
+        balances = np.zeros(month_num+1)  # 账户余额
+        principals = np.zeros(month_num+1)  # 投入本金
+        returns = np.zeros(month_num+1)  # 投资收益
+
+        """setting initial value"""
+
+        balances[0] = self.init_balance
+        principals[0] = self.init_balance
 
         for i in range(month_num):
             year_num = i // 12
@@ -128,9 +139,31 @@ class InvestmentCalculator:
                     year_num <= self._increment_period and year_num != 0:
                 current_monthly_investment += self._increment
 
-            balance = balance * (1 + monthly_return) + current_monthly_investment
+            balances[i+1] = (balances[i] * (1 + self.__monthly_return) +
+                             current_monthly_investment)
+            principals[i+1] = principals[i] + current_monthly_investment
+            returns[i+1] = balances[i+1] - principals[i+1]
 
-        return balance
+        """Create monthly data"""
+        dates = pd.date_range(
+            start=pd.Timestamp.now().to_period("M").to_timestamp(),
+            periods=month_num+1,
+            freq='ME'
+        )
+
+        monthly_data = pd.DataFrame({
+            "Date": dates,
+            "Principal": principals,
+            "Return": returns,
+            "Balance": balances
+        })
+
+        return InvestmentResult(
+            final_balance=float(balances[-1]),
+            total_principal=float(principals[-1]),
+            total_return=float(returns[-1]),
+            monthly_data=monthly_data
+        )
 
     def back_to_present(self,
                         target: Literal["num", "rate"],
@@ -153,9 +186,8 @@ class InvestmentCalculator:
 
         if target == "num":
             # Calculate required monthly investment
-            monthly_return = self._calculate_monthly_return
-            numerator = (value_target - self.init_balance * pow(1 + monthly_return, month_num))
-            denominator = (pow(1 + monthly_return, month_num) - 1) / monthly_return
+            numerator = (value_target - self.init_balance * pow(1 + self.__monthly_return, month_num))
+            denominator = (pow(1 + self.__monthly_return, month_num) - 1) / self.__monthly_return
             return numerator / denominator
 
         elif target == "rate":
@@ -183,23 +215,23 @@ if __name__ == "__main__":
             horizon=5,  # 5年投资期
             m_investment=1000,  # 每月投资1000元
             init_balance=0,  # 初始余额0元
-            method="geometric"  # 使用几何平均计算月收益率
+            method="geometric",  # 使用几何平均值计算月收益率
         )
 
         # 计算最终余额
-        final_balance = calc.automatic_investment()
-        print(f"Final balance: {final_balance:.2f}")
+        final_result = calc.automatic_investment()
 
         # 计算达到目标所需的每月投资额
         target_value = 100000
         required_monthly = calc.back_to_present("num", target_value)
         print(f"Required monthly investment to reach {target_value} "
-              f"with {calc.y_return} yearly return"
+              f"with {calc.y_return} yearly return "
               f"and {calc.init_balance} initial balance : {required_monthly:.2f}")
 
         # 计算达到目标所需的月收益率
         required_return = calc.back_to_present("rate", target_value)
-        print(f"Required monthly return rate: {required_return:.4%}")
+        print(f"Reaching the {target_value} target with {calc.m_investment} monthly investment, "
+              f"required monthly return rate: {required_return:.4%}")
 
     except ValueError as e:
         print(f"Error: {e}")
