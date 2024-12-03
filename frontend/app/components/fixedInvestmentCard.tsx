@@ -20,6 +20,9 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Label } from "@/components/ui/label"
+import { useFinalBalanceData } from "../hooks/useFixedInvestment"
+import { useState } from "react"
+import { finalBalanceType, fixedInvestmentFormType } from "../hooks/types"
 
 const fixedInvestmentFormSchema = z.object({
   initial_investment: z.string().min(0),
@@ -30,17 +33,7 @@ const fixedInvestmentFormSchema = z.object({
   incre_period: z.string().min(0),
 })
 
-// type apiBaseUrl = {
-//   apiBaseUrl: string
-// }
-
-// export async function getStaticProps() {
-//   const apiBaseUrl = process.env.NEXT_PUBLIC_BASE_URL
-//   return { props: { apiBaseUrl } }
-// }
 export default function FixedInvestmentCard() {
-
-  
   const form = useForm<z.infer<typeof fixedInvestmentFormSchema>>({
     resolver: zodResolver(fixedInvestmentFormSchema),
     defaultValues: {
@@ -52,11 +45,15 @@ export default function FixedInvestmentCard() {
       incre_period: "0"
     },
   })
+
+  const [formData, setformData] = useState<fixedInvestmentFormType>(form.getValues())
+  const final_balance = useFinalBalanceData(formData || null) as finalBalanceType;
+  
   const onSubmit = (values: z.infer<typeof fixedInvestmentFormSchema>) => {
-    const apiBaseUrl = process.env.NEXT_PUBLIC_BASE_URL
-    console.log(values)
-    console.log(apiBaseUrl)
+    setformData(values)
   }
+  
+  console.log(final_balance)
   return (
     <Card className="p-6 bg-primary-50">
       <CardHeader>
