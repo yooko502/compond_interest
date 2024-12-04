@@ -97,7 +97,10 @@ class InvestmentCalculator:
         elif self._method == "arithmetic":
             return self.y_return / 12
 
-    def automatic_investment(self) -> InvestmentResult:
+    def automatic_investment(self,
+                             horizon: float = None,
+                             m_investment: float = None,
+                             monthly_rate: float = None) -> InvestmentResult:
         """
         Calculate the final balance with optional periodic investment increment.
 
@@ -118,9 +121,10 @@ class InvestmentCalculator:
             float: Final balance after investment horizon.
         """
 
-        """计算投资期数以及设置当前月投资额"""
-        month_num = self.horizon * 12
-        current_monthly_investment = self.m_investment
+        """计算投资期数以及设置当前月投资额和期望收益率"""
+        month_num = self.horizon * 12 if horizon is None else horizon * 12
+        current_monthly_investment = self.m_investment if m_investment is None else m_investment
+        excepted_return = self.__monthly_return if monthly_rate is None else monthly_rate
 
         """initial data array"""
         """第一个元素为初始值，后续元素开始依次为投资一个月，两个月，三个月……时的月初时候的数值"""
@@ -143,7 +147,7 @@ class InvestmentCalculator:
                     year_num <= self._increment_period and year_num != 0:
                 current_monthly_investment += self._increment
 
-            balances[i + 1] = (balances[i] * (1 + self.__monthly_return) +
+            balances[i + 1] = (balances[i] * (1 + excepted_return) +
                                current_monthly_investment)
             principals[i + 1] = principals[i] + current_monthly_investment
             returns[i + 1] = balances[i + 1] - principals[i + 1]
@@ -215,10 +219,7 @@ class InvestmentCalculator:
             initial_guess = 0.01  # 1%月回报率作为初始猜测
             monthly_rate = fsolve(objective, x0=initial_guess)[0]
 
-            # 转换为年化收益率
-            annual_rate = pow(1 + monthly_rate, 12) - 1
-
-            return annual_rate
+            return monthly_rate
 
         elif target == "horizon":
             # Calculate required investment horizon using logarithm formula
