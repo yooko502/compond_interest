@@ -204,16 +204,21 @@ class InvestmentCalculator:
             from scipy.optimize import fsolve
 
             def objective(r):
-                # Objective function to solve for monthly return,
-                # r represents monthly return rate is a variable of the equation.
-                balance = self.init_balance
-                for _ in range(month_num):
-                    balance = balance * (1 + r) + self.m_investment
-                return balance - value_target
+                if abs(r) < 1e-10:  # 处理接近0的情况
+                    return self.init_balance + self.m_investment * month_num - value_target
+                else:
+                    # 使用准确的公式而不是循环
+                    return (self.init_balance * pow(1 + r, month_num) +
+                            self.m_investment * (pow(1 + r, month_num) - 1) / r) - value_target
 
-            return_rate = fsolve(objective, x0=0.01)[0]  # Use 1% as initial guess
-            y_return_rate = pow(1 + return_rate, 12) - 1
-            return y_return_rate
+            # 使用一个合理的初始猜测值
+            initial_guess = 0.01  # 1%月回报率作为初始猜测
+            monthly_rate = fsolve(objective, x0=initial_guess)[0]
+
+            # 转换为年化收益率
+            annual_rate = pow(1 + monthly_rate, 12) - 1
+
+            return annual_rate
 
         elif target == "horizon":
             # Calculate required investment horizon using logarithm formula
