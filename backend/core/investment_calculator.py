@@ -17,8 +17,8 @@ class InvestmentResult:
 
 def _validate_inputs(params: Dict) -> None:
     """Validate input parameters."""
-    if params['y_return'] < -1:
-        raise ValueError("Yearly return rate cannot be less than -100%")
+    if params['y_return'] < 0:
+        raise ValueError("Yearly return rate cannot be less than 0")
     if params['horizon'] <= 0:
         raise ValueError("Investment horizon must be positive")
     if params['m_investment'] < 0:
@@ -200,10 +200,15 @@ class InvestmentCalculator:
         if target == "amount":
             # Calculate required monthly investment
             # 等比数列求和
-            numerator = (value_target - self.init_balance * pow(1 + self.__monthly_return, month_num))
-            denominator = (pow(1 + self.__monthly_return, month_num) - 1) / self.__monthly_return
-            amount = numerator / denominator
-            return math.ceil(amount)
+            if self.__monthly_return == 0:
+                # Special case for 0% return
+                amount = (value_target - self.init_balance) / month_num
+                return math.ceil(amount)
+            else:
+                numerator = (value_target - self.init_balance * pow(1 + self.__monthly_return, month_num))
+                denominator = (pow(1 + self.__monthly_return, month_num) - 1) / self.__monthly_return
+                amount = numerator / denominator
+                return math.ceil(amount)
 
         elif target == "rate":
             # Calculate required monthly return rate using numerical method
@@ -245,13 +250,13 @@ if __name__ == "__main__":
     try:
         # 创建计算器实例：10%年收益率，5年投资期，每月投资1000元
         calc = InvestmentCalculator(
-            y_return=0.10,  # 10% 年收益率
-            horizon=5,  # 5年投资期
-            m_investment=1000,  # 每月投资1000元
+            y_return=0.2,  # 10% 年收益率
+            horizon=10,  # 5年投资期
+            m_investment=100,  # 每月投资1000元
             init_balance=0,  # 初始余额0元
             method="geometric",  # 使用几何平均值计算月收益率
-            increment=100,  # 每年增加100元投资
-            incre_period=3  # 持续3年增
+            increment=0,  # 每年增加100元投资
+            incre_period=0  # 持续3年增
         )
 
         # 计算最终余额
@@ -265,7 +270,7 @@ if __name__ == "__main__":
         plt.show()
 
         # 计算达到目标所需的每月投资额
-        target_value = 100000
+        target_value = 1000
         required_monthly = calc.back_to_present("amount", target_value)
         print(f"Required monthly investment to reach {target_value} "
               f"with {calc.y_return} yearly return "
