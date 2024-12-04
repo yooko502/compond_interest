@@ -21,8 +21,9 @@ import {
 } from "@/components/ui/form"
 import { Label } from "@/components/ui/label"
 import { useFinalBalanceData } from "../hooks/useFixedInvestment"
-import { useState } from "react"
-import { finalBalanceType, fixedInvestmentFormType } from "../hooks/types"
+import { useEffect, useState } from "react"
+import { finalBalanceResultType, fixedInvestmentFormType } from "../hooks/types"
+import { FixedInvestmentChart } from "./charts/fixedInvestmentChart"
 
 const fixedInvestmentFormSchema = z.object({
   initial_investment: z.string().min(0),
@@ -46,14 +47,18 @@ export default function FixedInvestmentCard() {
     },
   })
 
-  const [formData, setformData] = useState<fixedInvestmentFormType>(form.getValues())
-  const final_balance = useFinalBalanceData(formData || null) as finalBalanceType;
-  
+  const [formData, setformData] = useState<fixedInvestmentFormType | null>(null)
+  const {finalBalance, showTable} = useFinalBalanceData(formData)
+  const [finalBalanceData, setFinalBalanceData] = useState<finalBalanceResultType | null>()
+
   const onSubmit = (values: z.infer<typeof fixedInvestmentFormSchema>) => {
     setformData(values)
   }
-  
-  console.log(final_balance)
+ 
+  useEffect(() => {
+    setFinalBalanceData(finalBalance)
+  },[finalBalance])
+
   return (
     <Card className="p-6 bg-primary-50">
       <CardHeader>
@@ -164,6 +169,16 @@ export default function FixedInvestmentCard() {
             <Button type="submit">計算する</Button>
           </form>
         </Form>
+        {
+            showTable ? 
+            <div className="p-5">
+              <FixedInvestmentChart
+                finalBalanceChartData={finalBalanceData?.monthly_data || []}
+                totalPrincipal={finalBalanceData?.total_principal || 0}
+                finalBalance={finalBalanceData?.final_balance || 0}
+              />
+            </div> : null
+        }
       </CardContent>
     </Card>
   )

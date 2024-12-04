@@ -47,8 +47,8 @@ class InvestmentCalculator:
     """
 
     def __init__(self, y_return: float,
-                 horizon: int,
-                 m_investment: float,
+                 horizon: int = 0,
+                 m_investment: float = 0,
                  init_balance: float = 0,
                  method: Literal["geometric", "arithmetic", "geo", "arith"] = "geometric",
                  increment: float = 0,
@@ -221,7 +221,7 @@ if __name__ == "__main__":
 
         # 计算最终余额
         final_result = calc.automatic_investment()
-
+        print(f"final_result {final_result} ")
         # 计算达到目标所需的每月投资额
         target_value = 100000
         required_monthly = calc.back_to_present("num", target_value)
