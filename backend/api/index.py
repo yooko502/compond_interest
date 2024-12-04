@@ -56,7 +56,7 @@ def get_back_to_present_amount():
     )
 
     # 目標金額を達成するには
-    target_amount = 1000000
+    # target_amount = 1000000
     back_to_present = calc.back_to_present("amount", target_amount)
 
     # chart 用数据
