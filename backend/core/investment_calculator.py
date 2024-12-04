@@ -5,12 +5,13 @@ import math
 from typing import Literal, Dict, Optional
 from matplotlib import pyplot as plt
 
+
 @dataclass
 class InvestmentResult:
     """investment result dataclass"""
-    final_balance: float
-    total_principal: float
-    total_return: float
+    final_balance: float | int
+    total_principal: float | int
+    total_return: float | int
     monthly_data: pd.DataFrame
 
 
@@ -154,15 +155,15 @@ class InvestmentCalculator:
 
         monthly_data = pd.DataFrame({
             "Date": dates,
-            "Principal": principals,
-            "Return": returns,
-            "Balance": balances
+            "Principal": np.round(principals).astype(int),  # 直接转换为整数
+            "Return": np.round(returns).astype(int),
+            "Balance": np.round(balances).astype(int)
         })
 
         return InvestmentResult(
-            final_balance=float(balances[-1]),
-            total_principal=float(principals[-1]),
-            total_return=float(returns[-1]),
+            final_balance=round(balances[-1].item()),  # 对单个数值使用Python内置的round
+            total_principal=round(principals[-1].item()),
+            total_return=round(returns[-1].item()),
             monthly_data=monthly_data
         )
 
@@ -172,7 +173,7 @@ class InvestmentCalculator:
         """
         Calculate either required monthly investment or required monthly return
         to reach a target value.
-
+        除了计算出的收益率之外，其余回传的所有结果会向上取整
         Parameters:
             target (str): "num" for monthly investment or "rate" for required return
             or "horizon" for required investment horizon.
@@ -192,7 +193,7 @@ class InvestmentCalculator:
             numerator = (value_target - self.init_balance * pow(1 + self.__monthly_return, month_num))
             denominator = (pow(1 + self.__monthly_return, month_num) - 1) / self.__monthly_return
             amount = numerator / denominator
-            return amount
+            return math.ceil(amount)
 
         elif target == "rate":
             # Calculate required monthly return rate using numerical method
@@ -251,7 +252,6 @@ if __name__ == "__main__":
         final_result.monthly_data.plot(x="Date", y=["Principal", "Return", "Balance"])
         plt.show()
 
-
         # 计算达到目标所需的每月投资额
         target_value = 100000
         required_monthly = calc.back_to_present("amount", target_value)
@@ -263,6 +263,11 @@ if __name__ == "__main__":
         required_return = calc.back_to_present("rate", target_value)
         print(f"Reaching the {target_value} target with {calc.m_investment} monthly investment, "
               f"required yearly return rate: {required_return:.4%}")
+
+        # 计算达到目标所需的投资期限
+        required_horizon = calc.back_to_present("horizon", target_value)
+        print(f"Reaching the {target_value} target with {calc.m_investment} monthly investment, "
+              f"required investment horizon: {required_horizon} years")
 
     except ValueError as e:
         print(f"Error: {e}")
