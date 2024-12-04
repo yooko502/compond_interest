@@ -114,9 +114,11 @@ class InvestmentCalculator:
         3.当前年限是否在增加定投额年限内：year_num <= incre_period
         4.判断是否为第一年，第一年不进行增加定投额的操作，增加定投额从第二年开始：year_num != 0
 
-        Parameters:
-            No parameters.
-
+        Parameters:三个可选参数主要用于使用back_to_present方法计算完所需的值后，再次调用automatic_investment方法
+            1.horizon (float): Investment horizon in years (default: None, use class attribute)
+            2.m_investment (float): Monthly investment amount (default: None, use class attribute)
+            3.monthly_rate (float): Monthly return rate (default: None, use class attribute)
+            :return: InvestmentResult
         Returns:
             float: Final balance after investment horizon.
         """
