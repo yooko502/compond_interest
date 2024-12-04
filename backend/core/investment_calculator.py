@@ -127,11 +127,13 @@ class InvestmentCalculator:
         balances = np.zeros(month_num + 1)  # 账户余额
         principals = np.zeros(month_num + 1)  # 投入本金
         returns = np.zeros(month_num + 1)  # 投资收益
+        investment_amount = np.zeros(month_num + 1)  # 投资额
 
         """setting initial value"""
         """初始余额设置为0的情况下，会默认为每月定投额"""
         balances[0] = self.init_balance
         principals[0] = self.init_balance
+        investment_amount[0] = self.init_balance
 
         for i in range(month_num):
             year_num = i // 12
@@ -145,6 +147,7 @@ class InvestmentCalculator:
                                current_monthly_investment)
             principals[i + 1] = principals[i] + current_monthly_investment
             returns[i + 1] = balances[i + 1] - principals[i + 1]
+            investment_amount[i + 1] = current_monthly_investment
 
         """Create monthly data"""
         dates = pd.date_range(
@@ -157,7 +160,8 @@ class InvestmentCalculator:
             "Date": dates,
             "Principal": np.round(principals).astype(int),  # 直接转换为整数
             "Return": np.round(returns).astype(int),
-            "Balance": np.round(balances).astype(int)
+            "Balance": np.round(balances).astype(int),
+            "Investment": np.round(investment_amount).astype(int)
         })
 
         return InvestmentResult(
