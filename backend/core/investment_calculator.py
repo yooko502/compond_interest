@@ -137,7 +137,7 @@ class InvestmentCalculator:
             year_num = i // 12
 
             # Apply increment to monthly investment or not
-            if (i + 1) % 12 == 0 and self._increment != 0 and \
+            if i % 12 == 0 and self._increment != 0 and \
                     year_num <= self._increment_period and year_num != 0:
                 current_monthly_investment += self._increment
 
