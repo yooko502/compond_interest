@@ -20,24 +20,40 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Label } from "@/components/ui/label"
+import { apiBaseUrl } from "../hooks/constant"
+import { WithdrawalResultType } from "../hooks/types"
+import { useState } from "react"
 
 const WithdrawalFormSchema = z.object({
-    target_amount: z.string().min(0),
-    monthly_reserve: z.string().min(0),
-    reserve_periods: z.string().min(0)
+    target_amount: z.number().positive(),
+    monthly_reserve: z.number().positive(),
+    reserve_periods: z.number().positive()
 })
 
 export default function WithdrawalCard() {
+    const [withdrawalData, setWothdrawalData] = useState<WithdrawalResultType>()
     const form = useForm<z.infer<typeof WithdrawalFormSchema>>({
         resolver: zodResolver(WithdrawalFormSchema),
         defaultValues: {
-            target_amount: "1000",
-            monthly_reserve: "10",
-            reserve_periods: "10"
+            target_amount: 1000000,
+            monthly_reserve: 10,
+            reserve_periods: 10
         },
       })
-    const onSubmit = (values: z.infer<typeof WithdrawalFormSchema>) => {
+
+    const onSubmit = async (values: z.infer<typeof WithdrawalFormSchema>) => {
         console.log(values)
+        const response = await fetch(`${apiBaseUrl}/api/back_to_present_amount`, {
+          "method": "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(values)
+        })
+        if (!response.ok) return
+        const res = await response.json()
+        setWothdrawalData(res)
+        console.log("withdrawalData", withdrawalData)
     }
 
     return (
