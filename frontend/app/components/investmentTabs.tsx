@@ -7,6 +7,8 @@ import {
 import FixedInvestmentCard from "./fixedInvestmentCard"
 import WithdrawalCard from "./withdrawalCard"
 import MonthlySavingsCard from "./monthlySavingsCard"
+import { presentMethodsCard } from "../utils/constant"
+
 
 export function InvestmentTabs() {
   return (
@@ -19,12 +21,15 @@ export function InvestmentTabs() {
       <TabsContent value="accumulation" className="max-w-5xl mx-auto w-full">
         <FixedInvestmentCard />
       </TabsContent>
-      <TabsContent value="withdrawal">
-        <WithdrawalCard />
-      </TabsContent>
-      <TabsContent value="monthlySavings">
+      {presentMethodsCard.map((item) => {
+        <TabsContent value={item}>
+          <WithdrawalCard type={item}/>
+        </TabsContent>
+        })
+      }
+      {/* <TabsContent value="monthlySavings">
         <MonthlySavingsCard />
-      </TabsContent>
+      </TabsContent> */}
     </Tabs>
   )
 }

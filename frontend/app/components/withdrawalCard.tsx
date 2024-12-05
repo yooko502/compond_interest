@@ -30,7 +30,7 @@ const WithdrawalFormSchema = z.object({
     reserve_periods: z.number().positive()
 })
 
-export default function WithdrawalCard() {
+export default function WithdrawalCard({ type }: {type: string}) {
     const [withdrawalData, setWothdrawalData] = useState<WithdrawalResultType>()
     const form = useForm<z.infer<typeof WithdrawalFormSchema>>({
         resolver: zodResolver(WithdrawalFormSchema),
