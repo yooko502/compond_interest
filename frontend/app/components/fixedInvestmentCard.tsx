@@ -26,24 +26,24 @@ import { finalBalanceResultType, fixedInvestmentFormType } from "../hooks/types"
 import { FixedInvestmentChart } from "./charts/fixedInvestmentChart"
 
 const fixedInvestmentFormSchema = z.object({
-  initial_investment: z.string().min(0),
-  monthly_reserve: z.string().min(0),
-  reserve_periods: z.string().min(0),
-  year_return: z.string().min(0),
-  increment: z.string().min(0),
-  incre_period: z.string().min(0),
+  initial_investment: z.number().positive(),
+  monthly_reserve: z.number().positive(),
+  reserve_periods: z.number().positive(),
+  year_return: z.number().positive(),
+  increment: z.number().nonnegative(),
+  incre_period: z.number().nonnegative(),
 })
 
 export default function FixedInvestmentCard() {
   const form = useForm<z.infer<typeof fixedInvestmentFormSchema>>({
     resolver: zodResolver(fixedInvestmentFormSchema),
     defaultValues: {
-      initial_investment: "100",
-      monthly_reserve: "10",
-      reserve_periods: "10",
-      year_return: "3",
-      increment: "0",
-      incre_period: "0"
+      initial_investment: 100,
+      monthly_reserve: 10,
+      reserve_periods: 10,
+      year_return: 3,
+      increment: 0,
+      incre_period: 0
     },
   })
 
@@ -78,7 +78,7 @@ export default function FixedInvestmentCard() {
                   <FormLabel>初期投資額</FormLabel>
                   <div className="flex w-full max-w-5xl mx-auto items-center space-x-2">
                     <FormControl>
-                      <Input placeholder="100" {...field} />
+                      <Input type="number" placeholder="100" {...field} />
                     </FormControl>
                     <Label>万円</Label>
                   </div>
@@ -94,7 +94,7 @@ export default function FixedInvestmentCard() {
                   <FormLabel>毎月の積立額</FormLabel>
                   <div className="flex w-full max-w-5xl mx-auto items-center space-x-2">
                     <FormControl>
-                      <Input placeholder="10" {...field} />
+                      <Input type="number" placeholder="10" {...field} />
                     </FormControl>
                     <Label>万円</Label>
                   </div>
@@ -110,7 +110,7 @@ export default function FixedInvestmentCard() {
                   <FormLabel>積立期間</FormLabel>
                   <div className="flex w-full max-w-5xl mx-auto items-center space-x-2">
                     <FormControl>
-                      <Input placeholder="10" {...field} />
+                      <Input type="number" placeholder="10" {...field} />
                     </FormControl>
                     <Label>年</Label>
                   </div>
@@ -126,7 +126,7 @@ export default function FixedInvestmentCard() {
                   <FormLabel>想定リターン（年率）</FormLabel>
                   <div className="flex w-full max-w-5xl mx-auto items-center space-x-2">
                     <FormControl>
-                      <Input placeholder="3" {...field} />
+                      <Input type="number" placeholder="3" {...field} />
                     </FormControl>
                     <Label>%</Label>
                   </div>
@@ -142,7 +142,7 @@ export default function FixedInvestmentCard() {
                   <FormLabel>年間積立増額</FormLabel>
                   <div className="flex w-full max-w-5xl mx-auto items-center space-x-2">
                     <FormControl>
-                      <Input placeholder="0" {...field} />
+                      <Input type="number" placeholder="0" {...field} />
                     </FormControl>
                     <Label>万円</Label>
                   </div>
@@ -158,7 +158,7 @@ export default function FixedInvestmentCard() {
                   <FormLabel>増額年数</FormLabel>
                   <div className="flex w-full max-w-5xl mx-auto items-center space-x-2">
                     <FormControl>
-                      <Input placeholder="0" {...field} />
+                      <Input type="number" placeholder="0" {...field} />
                     </FormControl>
                     <Label>年</Label>
                   </div>

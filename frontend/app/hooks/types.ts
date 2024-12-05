@@ -1,10 +1,10 @@
 export type fixedInvestmentFormType = {
-    initial_investment: string,
-    monthly_reserve: string,
-    reserve_periods: string,
-    year_return: string,
-    increment: string,
-    incre_period: string,
+    initial_investment: number,
+    monthly_reserve: number,
+    reserve_periods: number,
+    year_return: number,
+    increment: number,
+    incre_period: number,
 }
 
 export type finalBalancePromiseType = {
