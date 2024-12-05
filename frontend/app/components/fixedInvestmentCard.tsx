@@ -22,7 +22,7 @@ import {
 import { Label } from "@/components/ui/label"
 import { useFinalBalanceData } from "../hooks/useFixedInvestment"
 import { useEffect, useState } from "react"
-import { finalBalanceResultType, fixedInvestmentFormType } from "../hooks/types"
+import { finalBalanceResultType, fixedInvestmentFormType } from "../utils/types"
 import { FixedInvestmentChart } from "./charts/fixedInvestmentChart"
 
 const fixedInvestmentFormSchema = z.object({

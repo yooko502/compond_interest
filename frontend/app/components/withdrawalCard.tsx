@@ -20,8 +20,8 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Label } from "@/components/ui/label"
-import { apiBaseUrl } from "../hooks/constant"
-import { WithdrawalResultType } from "../hooks/types"
+import { apiBaseUrl } from "../utils/constant"
+import { WithdrawalResultType } from "../utils/types"
 import { useState } from "react"
 
 const WithdrawalFormSchema = z.object({

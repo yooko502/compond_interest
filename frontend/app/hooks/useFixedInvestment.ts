@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { apiBaseUrl } from "./constant"
-import { fixedInvestmentFormType, finalBalanceResultType, finalBalanceChartType } from "./types";
+import { apiBaseUrl } from "../utils/constant"
+import { fixedInvestmentFormType, finalBalanceResultType, finalBalanceChartType } from "../utils/types";
 
 export const useFinalBalanceData = (data: fixedInvestmentFormType | null) => {
     const [finalBalance, setFinalBalance] = useState<finalBalanceResultType| null>(null);

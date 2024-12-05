@@ -17,7 +17,7 @@ import {
     ChartTooltip,
     ChartTooltipContent,
 } from "@/components/ui/chart"
-import { finalBalanceChartType, FixedInvestmentChartParams } from "../../hooks/types"
+import { finalBalanceChartType, FixedInvestmentChartParams } from "../../utils/types"
 import { useMemo, useState } from "react"
 
 
