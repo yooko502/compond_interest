@@ -60,7 +60,7 @@ def get_back_to_present_amount():
     back_to_present = calc.back_to_present("amount", target_amount)
 
     # chart 用数据
-    data = calc.automatic_investment()
+    data = calc.automatic_investment(m_investment=back_to_present)
     result = {
         "final_balance": data.final_balance,
         "total_principal": data.total_principal,
