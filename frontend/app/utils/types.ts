@@ -31,7 +31,7 @@ export type FixedInvestmentChartParams = {
     finalBalance: number
 }
 
-export type WithdrawalResultType = {
+export type PresentCommonResultType = {
     chart_data: finalBalanceChartType[],
     back_to_present: number
 }

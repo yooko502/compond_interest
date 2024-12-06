@@ -21,29 +21,34 @@ import {
 } from "@/components/ui/form"
 import { Label } from "@/components/ui/label"
 import { apiBaseUrl } from "../utils/constant"
-import { WithdrawalResultType } from "../utils/types"
+import { PresentCommonResultType } from "../utils/types"
 import { useState } from "react"
 
-const WithdrawalFormSchema = z.object({
-    target_amount: z.number().positive(),
-    monthly_reserve: z.number().positive(),
-    reserve_periods: z.number().positive()
+const presentCommonFormSchema = z.object({
+  initial_investment: z.number().positive(),
+  monthly_reserve: z.number().positive(),
+  reserve_periods: z.number().positive(),
+  year_return: z.number().positive(),
+  increment: z.number().nonnegative(),
+  incre_period: z.number().nonnegative(),
+  // 目标金额
+  target_amount: z.number().positive(),
 })
 
 export default function PresentCommonCard({ type }: {type: string}) {
-    const [presentCommonData, setPresentCommonData] = useState<WithdrawalResultType>()
-    const form = useForm<z.infer<typeof WithdrawalFormSchema>>({
-        resolver: zodResolver(WithdrawalFormSchema),
+    const [presentCommonData, setPresentCommonData] = useState<PresentCommonResultType>()
+    const form = useForm<z.infer<typeof presentCommonFormSchema>>({
+        resolver: zodResolver(presentCommonFormSchema),
         defaultValues: {
-            target_amount: 1000000,
+            target_amount: 0,
             monthly_reserve: 10,
             reserve_periods: 10
         },
       })
 
-    const onSubmit = async (values: z.infer<typeof WithdrawalFormSchema>) => {
+    const onSubmit = async (values: z.infer<typeof presentCommonFormSchema>) => {
         console.log(values)
-        const response = await fetch(`${apiBaseUrl}/api/back_to_present_amount`, {
+        const response = await fetch(`${apiBaseUrl}/api/back_to_present?${type}`, {
           "method": "POST",
           headers: {
             "Content-Type": "application/json"
