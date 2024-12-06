@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/chart"
 import { finalBalanceChartType, FixedInvestmentChartParams } from "../../utils/types"
 import { useMemo, useState } from "react"
+import { presenCommonUnit, presentCommonTitle } from "@/app/utils/constant"
 
 
 const chartConfig = {
@@ -32,17 +33,17 @@ const chartConfig = {
     },
 } satisfies ChartConfig
 
-export function FixedInvestmentChart(props:FixedInvestmentChartParams) {
+export function CommonChart(props: FixedInvestmentChartParams) {
     const chartData: finalBalanceChartType[] = props.finalBalanceChartData
     const [firstDate, setFirstDate] = useState<number>()
     const [lastDate, setLastDate] = useState<number>()
 
-    useMemo(()=>{
+    useMemo(() => {
         if (chartData === undefined) return
-        if (chartData.length === 0) return 
+        if (chartData.length === 0) return
         setFirstDate(chartData[0].Date)
         setLastDate(chartData[chartData.length - 1].Date)
-    },[chartData])
+    }, [chartData])
 
     console.log(lastDate)
 
@@ -56,24 +57,40 @@ export function FixedInvestmentChart(props:FixedInvestmentChartParams) {
                     </CardDescription>
                 </div>
                 <div className="flex">
+                    {
+                        props.type ? (
+                            <button
+                                className="relative z-30 inline-flex flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
+                            >
+                                <span className="text-xs text-muted-foreground">
+                                    {presentCommonTitle[props.type]}
+                                </span>
+                                <span className="text-lg font-bold leading-none sm:text-3xl">
+                                    {props.backToPresent}<span className="text-xs font-bold leading-none sm:text-xs">
+                                        {presenCommonUnit[props.type]}
+                                    </span>
+                                </span>
+                            </button>
+                        ) : null
+                    }
                     <button
-                        className="relative z-30 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
+                        className="relative z-30 inline-flex flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
                     >
                         <span className="text-xs text-muted-foreground">
                             投資元本
                         </span>
                         <span className="text-lg font-bold leading-none sm:text-3xl">
-                            {props.totalPrincipal}
+                            {props.totalPrincipal}<span className="text-xs font-bold leading-none sm:text-xs">万円</span>
                         </span>
                     </button>
                     <button
-                        className="relative z-30 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
+                        className="relative z-30 inline-flex flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
                     >
                         <span className="text-xs text-muted-foreground">
                             予想資産額
                         </span>
                         <span className="text-lg font-bold leading-none sm:text-3xl">
-                            {props.finalBalance}
+                            {props.finalBalance}<span className="text-xs font-bold leading-none sm:text-xs">万円</span>
                         </span>
                     </button>
                 </div>
@@ -109,7 +126,7 @@ export function FixedInvestmentChart(props:FixedInvestmentChartParams) {
                                         indicator="dot"
                                     />
                                 )
-                            }} 
+                            }}
                         />
                         <YAxis />
                         <defs>
@@ -131,7 +148,7 @@ export function FixedInvestmentChart(props:FixedInvestmentChartParams) {
                 <div className="flex w-full items-start gap-2 text-sm">
                     <div className="grid gap-2">
                         <div className="flex items-center gap-2 font-medium leading-none">
-                            ご利用にあたっての留意事項 <BadgeInfo className="h-4 w-4"/>
+                            ご利用にあたっての留意事項 <BadgeInfo className="h-4 w-4" />
                         </div>
                         <div className="flex items-center gap-2 leading-none text-muted-foreground">
                             計算された数値は、あくまでもシミュレーションであり、将来の市場環境の変動や運用成果等を示唆および保証するものではありません。また、税金、手数料、費用等を考慮しておりません。

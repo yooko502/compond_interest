@@ -28,10 +28,22 @@ export type finalBalanceChartType = {
 export type FixedInvestmentChartParams = {
     finalBalanceChartData: finalBalanceChartType[]
     totalPrincipal: number,
-    finalBalance: number
+    finalBalance: number,
+    type?: string,
+    backToPresent?: number
 }
 
 export type PresentCommonResultType = {
-    chart_data: finalBalanceChartType[],
+    chart_data: finalBalanceResultType,
     back_to_present: number
+}
+
+export type PresentCommonFormType = {
+    initial_investment: number,
+    monthly_reserve: number,
+    reserve_periods: number,
+    year_return: number,
+    increment: number,
+    incre_period: number,
+    target_amount: number
 }
