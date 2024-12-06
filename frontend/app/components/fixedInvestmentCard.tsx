@@ -20,26 +20,18 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Label } from "@/components/ui/label"
+import { useFinalBalanceData } from "../hooks/useFixedInvestment"
+import { useEffect, useState } from "react"
+import { finalBalanceResultType, fixedInvestmentFormType } from "../utils/types"
+import { CommonChart } from "./charts/commonChart"
 
 const fixedInvestmentFormSchema = z.object({
-  initial_investment: z.number().min(0, {
-    message: "正数を入力して下さい"
-  }),
-  monthly_reserve: z.number().min(0, {
-    message: "正数を入力して下さい"
-  }),
-  reserve_periods: z.number().min(0, {
-    message: "正数を入力して下さい"
-  }),
-  year_return: z.number().min(0, {
-    message: "正数を入力して下さい"
-  }),
-  increment: z.number().min(0, {
-    message: "正数を入力して下さい"
-  }),
-  incre_period: z.number().min(0, {
-    message: "正数を入力して下さい"
-  }),
+  initial_investment: z.coerce.number().positive(),
+  monthly_reserve: z.coerce.number().positive(),
+  reserve_periods: z.coerce.number().positive(),
+  year_return: z.coerce.number().positive(),
+  increment: z.coerce.number().nonnegative(),
+  incre_period: z.coerce.number().nonnegative(),
 })
 
 export default function FixedInvestmentCard() {
@@ -54,9 +46,19 @@ export default function FixedInvestmentCard() {
       incre_period: 0
     },
   })
+
+  const [formData, setformData] = useState<fixedInvestmentFormType | null>(null)
+  const {finalBalance, showTable} = useFinalBalanceData(formData)
+  const [finalBalanceData, setFinalBalanceData] = useState<finalBalanceResultType | null>()
+
   const onSubmit = (values: z.infer<typeof fixedInvestmentFormSchema>) => {
-    console.log(values)
+    setformData(values)
   }
+ 
+  useEffect(() => {
+    setFinalBalanceData(finalBalance)
+  },[finalBalance])
+
   return (
     <Card className="p-6 bg-primary-50">
       <CardHeader>
@@ -76,7 +78,7 @@ export default function FixedInvestmentCard() {
                   <FormLabel>初期投資額</FormLabel>
                   <div className="flex w-full max-w-5xl mx-auto items-center space-x-2">
                     <FormControl>
-                      <Input {...field} />
+                      <Input type="number" placeholder="100" {...field} />
                     </FormControl>
                     <Label>万円</Label>
                   </div>
@@ -92,7 +94,7 @@ export default function FixedInvestmentCard() {
                   <FormLabel>毎月の積立額</FormLabel>
                   <div className="flex w-full max-w-5xl mx-auto items-center space-x-2">
                     <FormControl>
-                      <Input {...field} />
+                      <Input type="number" placeholder="10" {...field} />
                     </FormControl>
                     <Label>万円</Label>
                   </div>
@@ -108,7 +110,7 @@ export default function FixedInvestmentCard() {
                   <FormLabel>積立期間</FormLabel>
                   <div className="flex w-full max-w-5xl mx-auto items-center space-x-2">
                     <FormControl>
-                      <Input placeholder="10" {...field} />
+                      <Input type="number" placeholder="10" {...field} />
                     </FormControl>
                     <Label>年</Label>
                   </div>
@@ -124,7 +126,7 @@ export default function FixedInvestmentCard() {
                   <FormLabel>想定リターン（年率）</FormLabel>
                   <div className="flex w-full max-w-5xl mx-auto items-center space-x-2">
                     <FormControl>
-                      <Input placeholder="10" {...field} />
+                      <Input type="number" placeholder="3" {...field} />
                     </FormControl>
                     <Label>%</Label>
                   </div>
@@ -140,7 +142,7 @@ export default function FixedInvestmentCard() {
                   <FormLabel>年間積立増額</FormLabel>
                   <div className="flex w-full max-w-5xl mx-auto items-center space-x-2">
                     <FormControl>
-                      <Input placeholder="10" {...field} />
+                      <Input type="number" placeholder="0" {...field} />
                     </FormControl>
                     <Label>万円</Label>
                   </div>
@@ -156,7 +158,7 @@ export default function FixedInvestmentCard() {
                   <FormLabel>増額年数</FormLabel>
                   <div className="flex w-full max-w-5xl mx-auto items-center space-x-2">
                     <FormControl>
-                      <Input placeholder="10" {...field} />
+                      <Input type="number" placeholder="0" {...field} />
                     </FormControl>
                     <Label>年</Label>
                   </div>
@@ -164,9 +166,19 @@ export default function FixedInvestmentCard() {
                 </FormItem>
               )}
             />
-            <Button type="submit">計算する</Button>
+            <Button type="submit" className="bg-primary-950">計算する</Button>
           </form>
         </Form>
+        {
+            showTable ? 
+            <div className="p-5">
+              <CommonChart
+                finalBalanceChartData={finalBalanceData?.monthly_data || []}
+                totalPrincipal={finalBalanceData?.total_principal || 0}
+                finalBalance={finalBalanceData?.final_balance || 0}
+              />
+            </div> : null
+        }
       </CardContent>
     </Card>
   )
