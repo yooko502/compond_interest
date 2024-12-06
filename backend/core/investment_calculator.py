@@ -179,7 +179,8 @@ class InvestmentCalculator:
 
     def back_to_present(self,
                         target: Literal["amount", "rate", "horizon"],
-                        value_target: float) -> float | np.ndarray:
+                        value_target: float,
+                        initial: float = None) -> float | np.ndarray:
         """
         Calculate either required monthly investment or required monthly return
         to reach a target value.
@@ -196,16 +197,19 @@ class InvestmentCalculator:
             raise ValueError("Target value must be positive")
 
         month_num = self.horizon * 12
+        initial_balance = self.init_balance if initial is None else initial
 
         if target == "amount":
             # Calculate required monthly investment
+            if value_target <= initial_balance:
+                return 0  # 已达到目标,无需投资
             # 等比数列求和
             if self.__monthly_return == 0:
                 # Special case for 0% return
-                amount = (value_target - self.init_balance) / month_num
+                amount = (value_target - initial_balance) / month_num
                 return math.ceil(amount)
             else:
-                numerator = (value_target - self.init_balance * pow(1 + self.__monthly_return, month_num))
+                numerator = (value_target - initial_balance * pow(1 + self.__monthly_return, month_num))
                 denominator = (pow(1 + self.__monthly_return, month_num) - 1) / self.__monthly_return
                 amount = numerator / denominator
                 return math.ceil(amount)
@@ -213,13 +217,14 @@ class InvestmentCalculator:
         elif target == "rate":
             # Calculate required monthly return rate using numerical method
             from scipy.optimize import fsolve
-
+            if value_target <= initial_balance + self.m_investment * month_num:
+                return 0
             def objective(r):
                 if abs(r) < 1e-10:  # 处理接近0的情况
-                    return self.init_balance + self.m_investment * month_num - value_target
+                    return initial_balance + self.m_investment * month_num - value_target
                 else:
                     # 使用准确的公式而不是循环
-                    return (self.init_balance * pow(1 + r, month_num) +
+                    return (initial_balance * pow(1 + r, month_num) +
                             self.m_investment * (pow(1 + r, month_num) - 1) / r) - value_target
 
             # 使用一个合理的初始猜测值
@@ -230,14 +235,15 @@ class InvestmentCalculator:
 
         elif target == "horizon":
             # Calculate required investment horizon using logarithm formula
-
+            if value_target <= initial_balance: # 如果目标值小于初始值，直接返回0
+                return 0  # 已达到目标
             # Calculate number of months using the derived formula
             if self.__monthly_return == 0:
                 # Special case for 0% return
-                months = (value_target - self.init_balance) / self.m_investment
+                months = (value_target - initial_balance) / self.m_investment
             else:
                 numerator = value_target + self.m_investment / self.__monthly_return
-                denominator = self.init_balance + self.m_investment / self.__monthly_return
+                denominator = initial_balance + self.m_investment / self.__monthly_return
                 months = math.log(numerator / denominator) / math.log(1 + self.__monthly_return)
 
             # Convert months to years, ensure non-negative and ceiling to next integer
@@ -250,9 +256,9 @@ if __name__ == "__main__":
     try:
         # 创建计算器实例：10%年收益率，5年投资期，每月投资1000元
         calc = InvestmentCalculator(
-            y_return=0.2,  # 10% 年收益率
+            y_return=0.02,  # 10% 年收益率
             horizon=10,  # 5年投资期
-            m_investment=100,  # 每月投资1000元
+            m_investment=2,  # 每月投资1000元
             init_balance=0,  # 初始余额0元
             method="geometric",  # 使用几何平均值计算月收益率
             increment=0,  # 每年增加100元投资
