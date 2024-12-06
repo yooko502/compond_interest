@@ -48,7 +48,7 @@ class InvestmentCalculator:
     """
 
     def __init__(self, y_return: float = 0,
-                 horizon: int = 0,
+                 horizon: int = 1,
                  m_investment: float = 0,
                  init_balance: float = 0,
                  method: Literal["geometric", "arithmetic"] = "geometric",
