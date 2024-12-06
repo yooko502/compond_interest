@@ -35,6 +35,18 @@ const presentCommonFormSchema = z.object({
   target_amount: z.number().positive(),
 })
 
+const presentCommonTitle: {[key:string]: string} = {
+  "amount": "毎月積立額",
+  "rate": "利回り",
+  "horizon": ""
+}
+
+const presentCommonDescription: {[key:string]: string} = {
+  "amount": "目標額を達成するための毎月積立額を計算する",
+  "rate": "目標額を達成するための利回りを計算する",
+  "horizon": ""
+}
+
 export default function PresentCommonCard({ type }: {type: string}) {
     const [presentCommonData, setPresentCommonData] = useState<PresentCommonResultType>()
     const form = useForm<z.infer<typeof presentCommonFormSchema>>({
@@ -64,9 +76,9 @@ export default function PresentCommonCard({ type }: {type: string}) {
     return (
         <Card className="p-6 bg-primary-50">
             <CardHeader>
-                <CardTitle>利回り</CardTitle>
+                <CardTitle>{presentCommonTitle[type]}</CardTitle>
                 <CardDescription>
-                目標額を達成するための利回りを計算する
+                {presentCommonDescription[type]}
                 </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
