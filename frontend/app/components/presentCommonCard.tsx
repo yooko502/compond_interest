@@ -30,8 +30,8 @@ const WithdrawalFormSchema = z.object({
     reserve_periods: z.number().positive()
 })
 
-export default function WithdrawalCard({ type }: {type: string}) {
-    const [withdrawalData, setWothdrawalData] = useState<WithdrawalResultType>()
+export default function PresentCommonCard({ type }: {type: string}) {
+    const [presentCommonData, setPresentCommonData] = useState<WithdrawalResultType>()
     const form = useForm<z.infer<typeof WithdrawalFormSchema>>({
         resolver: zodResolver(WithdrawalFormSchema),
         defaultValues: {
@@ -52,8 +52,8 @@ export default function WithdrawalCard({ type }: {type: string}) {
         })
         if (!response.ok) return
         const res = await response.json()
-        setWothdrawalData(res)
-        console.log("withdrawalData", withdrawalData)
+        setPresentCommonData(res)
+        console.log("withdrawalData", presentCommonData)
     }
 
     return (

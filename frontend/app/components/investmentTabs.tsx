@@ -5,7 +5,7 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs"
 import FixedInvestmentCard from "./fixedInvestmentCard"
-import WithdrawalCard from "./withdrawalCard"
+import PresentCommonCard from "./presentCommonCard"
 import MonthlySavingsCard from "./monthlySavingsCard"
 import { presentMethodsCard } from "../utils/constant"
 
@@ -23,7 +23,7 @@ export function InvestmentTabs() {
       </TabsContent>
       {presentMethodsCard.map((item) => {
         <TabsContent value={item}>
-          <WithdrawalCard type={item}/>
+          <PresentCommonCard type={item}/>
         </TabsContent>
         })
       }
