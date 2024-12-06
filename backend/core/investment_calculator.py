@@ -1,6 +1,7 @@
-import numpy as np
+from numpy import zeros, array, ndarray
+from numpy import round as np_round
 from dataclasses import dataclass
-import pandas as pd
+from pandas import date_range, DataFrame, Timestamp
 import math
 from typing import Literal, Dict, Optional
 from matplotlib import pyplot as plt
@@ -12,7 +13,7 @@ class InvestmentResult:
     final_balance: float | int
     total_principal: float | int
     total_return: float | int
-    monthly_data: pd.DataFrame
+    monthly_data: DataFrame
 
 
 def _validate_inputs(params: Dict) -> None:
@@ -130,10 +131,10 @@ class InvestmentCalculator:
 
         """initial data array"""
         """第一个元素为初始值，后续元素开始依次为投资一个月，两个月，三个月……时的月初时候的数值"""
-        balances = np.zeros(month_num + 1)  # 账户余额
-        principals = np.zeros(month_num + 1)  # 投入本金
-        returns = np.zeros(month_num + 1)  # 投资收益
-        investment_amount = np.zeros(month_num + 1)  # 投资额
+        balances = zeros(month_num + 1)  # 账户余额
+        principals = zeros(month_num + 1)  # 投入本金
+        returns = zeros(month_num + 1)  # 投资收益
+        investment_amount = zeros(month_num + 1)  # 投资额
 
         """setting initial value"""
         """初始余额设置为0的情况下，会默认为每月定投额"""
@@ -156,18 +157,18 @@ class InvestmentCalculator:
             investment_amount[i + 1] = current_monthly_investment
 
         """Create monthly data"""
-        dates = pd.date_range(
-            start=pd.Timestamp.now().to_period("M").to_timestamp(),
+        dates = date_range(
+            start= Timestamp.now().to_period("M").to_timestamp(),
             periods=month_num + 1,
             freq='ME'
         )
 
-        monthly_data = pd.DataFrame({
+        monthly_data = DataFrame({
             "Date": dates,
-            "Principal": np.round(principals).astype(int),  # 直接转换为整数
-            "Return": np.round(returns).astype(int),
-            "Balance": np.round(balances).astype(int),
-            "Investment": np.round(investment_amount).astype(int)
+            "Principal": np_round(principals).astype(int),  # 直接转换为整数
+            "Return": np_round(returns).astype(int),
+            "Balance": np_round(balances).astype(int),
+            "Investment": np_round(investment_amount).astype(int)
         })
 
         return InvestmentResult(
@@ -180,7 +181,7 @@ class InvestmentCalculator:
     def back_to_present(self,
                         target: Literal["amount", "rate", "horizon"],
                         value_target: float,
-                        initial: float = None) -> float | np.ndarray:
+                        initial: float = None) -> float | ndarray:
         """
         Calculate either required monthly investment or required monthly return
         to reach a target value.
@@ -192,6 +193,9 @@ class InvestmentCalculator:
 
         Returns:
             float: Required monthly investment or monthly return rate
+            :param value_target: 目标金额
+            :param target: 所求目标类型，amount为每月投资额，rate为年化收益率，horizon为投资期限
+            :param initial: 初始值
         """
         if value_target <= 0:
             raise ValueError("Target value must be positive")
