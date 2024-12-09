@@ -47,3 +47,8 @@ export type PresentCommonFormType = {
     incre_period: number,
     target_amount: number
 }
+
+export type screenWidthAlertProps = {
+    open: boolean,
+    setOpen: (open: boolean)=>void
+}

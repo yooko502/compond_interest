@@ -24,6 +24,7 @@ import { useFinalBalanceData } from "../hooks/useFixedInvestment"
 import { useEffect, useState } from "react"
 import { finalBalanceResultType, fixedInvestmentFormType } from "../utils/types"
 import { CommonChart } from "./charts/commonChart"
+import { CheckScreenWidthAlert } from "./screenWidthAlert"
 
 const fixedInvestmentFormSchema = z.object({
   initial_investment: z.coerce.number().positive(),
@@ -50,8 +51,13 @@ export default function FixedInvestmentCard() {
   const [formData, setformData] = useState<fixedInvestmentFormType | null>(null)
   const {finalBalance, showTable} = useFinalBalanceData(formData)
   const [finalBalanceData, setFinalBalanceData] = useState<finalBalanceResultType | null>()
+  const [open, setOpen] = useState<boolean>(false)
 
   const onSubmit = (values: z.infer<typeof fixedInvestmentFormSchema>) => {
+    if(window.screen.width < 768) {
+      setOpen(true)
+      return
+    }
     setformData(values)
   }
  
@@ -60,6 +66,7 @@ export default function FixedInvestmentCard() {
   },[finalBalance])
 
   return (
+    <>
     <Card className="p-6 bg-primary-50">
       <CardHeader>
         <CardTitle>将来いくらになるかを知りたい</CardTitle>
@@ -181,5 +188,7 @@ export default function FixedInvestmentCard() {
         }
       </CardContent>
     </Card>
+    <CheckScreenWidthAlert open={open} setOpen={setOpen}/>
+    </>
   )
 }

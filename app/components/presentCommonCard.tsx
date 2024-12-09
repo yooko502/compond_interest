@@ -24,6 +24,7 @@ import { apiBaseUrl, presentCommonDescription, presentCommonTitle } from "../uti
 import { PresentCommonResultType } from "../utils/types"
 import { useEffect, useState } from "react"
 import { CommonChart } from "./charts/commonChart"
+import { CheckScreenWidthAlert } from "./screenWidthAlert"
 
 const presentCommonFormSchema = z.object({
     target_amount: z.coerce.number().positive(),// 目标金额
@@ -96,30 +97,19 @@ export default function PresentCommonCard({ type }: { type: string }) {
     }, [type])
 
     console.log("plateshow", plateTypeShow)
+    const [open, setOpen] = useState<boolean>(false)
 
     const onSubmit = async (values: z.infer<typeof presentCommonFormSchema>) => {
-        console.log(values)
+        if (window.screen.width < 768) {
+            setOpen(true)
+            return
+        }
         setFormValus(values)
-        // const response = await fetch(`${apiBaseUrl}/present_data?target=${type}`, {
-        //     "method": "POST",
-        //     headers: {
-        //         "Content-Type": "application/json"
-        //     },
-        //     body: JSON.stringify(values)
-        // })
-        // if (!response.ok) return
-        // const res = await response.json()
-        // console.log("res", res)
-        // if (res !== undefined){
-        //     setPresentCommonData(res)
-        //     setShowChart(true)
-        // }
-        // console.log("withdrawalData", presentCommonData)
     }
 
     useEffect(() => {
         if (formValus) {
-            const fetchData = async() => {
+            const fetchData = async () => {
                 const response = await fetch(`${apiBaseUrl}/present_data?target=${type}`, {
                     "method": "POST",
                     headers: {
@@ -130,161 +120,164 @@ export default function PresentCommonCard({ type }: { type: string }) {
                 if (!response.ok) return
                 const res = await response.json()
                 console.log("res", res)
-         
+
                 setPresentCommonData(res)
                 setShowChart(true)
             }
             fetchData()
         }
-    },[formValus])
+    }, [formValus])
 
     console.log("presentCommonData", presentCommonData)
 
     return (
-        <Card className="p-6 bg-primary-50">
-            <CardHeader>
-                <CardTitle>{presentCommonTitle[type]}</CardTitle>
-                <CardDescription>
-                    {presentCommonDescription[type]}
-                </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-2">
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                        <FormField
-                            control={form.control}
-                            name="target_amount"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>目標額</FormLabel>
-                                    <div className="flex w-full max-w-5xl mx-auto items-center space-x-2">
-                                        <FormControl>
-                                            <Input {...field} />
-                                        </FormControl>
-                                        <Label>万円</Label>
-                                    </div>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        {plateTypeShow.monthly_reserve ? <FormField
-                            control={form.control}
-                            name="monthly_reserve"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>毎月の積立額</FormLabel>
-                                    <div className="flex w-full max-w-5xl mx-auto items-center space-x-2">
-                                        <FormControl>
-                                            <Input {...field} />
-                                        </FormControl>
-                                        <Label>万円</Label>
-                                    </div>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        /> : null}
-                        {plateTypeShow.reserve_periods ? <FormField
-                            control={form.control}
-                            name="reserve_periods"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>積立期間</FormLabel>
-                                    <div className="flex w-full max-w-5xl mx-auto items-center space-x-2">
-                                        <FormControl>
-                                            <Input {...field} />
-                                        </FormControl>
-                                        <Label>年</Label>
-                                    </div>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        /> : null}
-                        {plateTypeShow.year_return ? <FormField
-                            control={form.control}
-                            name="year_return"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>想定リターン（年率）</FormLabel>
-                                    <div className="flex w-full max-w-5xl mx-auto items-center space-x-2">
-                                        <FormControl>
-                                            <Input {...field} />
-                                        </FormControl>
-                                        <Label>%</Label>
-                                    </div>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        /> : null}
-                        {
-                            defaultColumnShow ? (<>
-                                <FormField
-                                    control={form.control}
-                                    name="initial_investment"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>初期投資額</FormLabel>
-                                            <div className="flex w-full max-w-5xl mx-auto items-center space-x-2">
-                                                <FormControl>
-                                                    <Input {...field} />
-                                                </FormControl>
-                                                <Label>万円</Label>
-                                            </div>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={form.control}
-                                    name="increment"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>年間積立増額</FormLabel>
-                                            <div className="flex w-full max-w-5xl mx-auto items-center space-x-2">
-                                                <FormControl>
-                                                    <Input {...field} />
-                                                </FormControl>
-                                                <Label>万円</Label>
-                                            </div>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={form.control}
-                                    name="incre_period"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>増額年数</FormLabel>
-                                            <div className="flex w-full max-w-5xl mx-auto items-center space-x-2">
-                                                <FormControl>
-                                                    <Input {...field} />
-                                                </FormControl>
-                                                <Label>年</Label>
-                                            </div>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                            </>
-                            ) : null
-                        }
-
-                        <Button type="submit" className="bg-primary-950">計算する</Button>
-                    </form>
-                </Form>
-                {
-                    showChart ?
-                        <div className="p-5">
-                            <CommonChart
-                                finalBalanceChartData={presentCommonData?.chart_data.monthly_data || []}
-                                totalPrincipal={presentCommonData?.chart_data.total_principal || 0}
-                                finalBalance={presentCommonData?.chart_data.final_balance || 0}
-                                type={type}
-                                backToPresent={presentCommonData?.back_to_present || 0}
+        <>
+            <Card className="p-6 bg-primary-50">
+                <CardHeader>
+                    <CardTitle>{presentCommonTitle[type]}</CardTitle>
+                    <CardDescription>
+                        {presentCommonDescription[type]}
+                    </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                    <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                            <FormField
+                                control={form.control}
+                                name="target_amount"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>目標額</FormLabel>
+                                        <div className="flex w-full max-w-5xl mx-auto items-center space-x-2">
+                                            <FormControl>
+                                                <Input {...field} />
+                                            </FormControl>
+                                            <Label>万円</Label>
+                                        </div>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
                             />
-                        </div> : null
-                }
-            </CardContent>
-        </Card>
+                            {plateTypeShow.monthly_reserve ? <FormField
+                                control={form.control}
+                                name="monthly_reserve"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>毎月の積立額</FormLabel>
+                                        <div className="flex w-full max-w-5xl mx-auto items-center space-x-2">
+                                            <FormControl>
+                                                <Input {...field} />
+                                            </FormControl>
+                                            <Label>万円</Label>
+                                        </div>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            /> : null}
+                            {plateTypeShow.reserve_periods ? <FormField
+                                control={form.control}
+                                name="reserve_periods"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>積立期間</FormLabel>
+                                        <div className="flex w-full max-w-5xl mx-auto items-center space-x-2">
+                                            <FormControl>
+                                                <Input {...field} />
+                                            </FormControl>
+                                            <Label>年</Label>
+                                        </div>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            /> : null}
+                            {plateTypeShow.year_return ? <FormField
+                                control={form.control}
+                                name="year_return"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>想定リターン（年率）</FormLabel>
+                                        <div className="flex w-full max-w-5xl mx-auto items-center space-x-2">
+                                            <FormControl>
+                                                <Input {...field} />
+                                            </FormControl>
+                                            <Label>%</Label>
+                                        </div>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            /> : null}
+                            {
+                                defaultColumnShow ? (<>
+                                    <FormField
+                                        control={form.control}
+                                        name="initial_investment"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>初期投資額</FormLabel>
+                                                <div className="flex w-full max-w-5xl mx-auto items-center space-x-2">
+                                                    <FormControl>
+                                                        <Input {...field} />
+                                                    </FormControl>
+                                                    <Label>万円</Label>
+                                                </div>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        control={form.control}
+                                        name="increment"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>年間積立増額</FormLabel>
+                                                <div className="flex w-full max-w-5xl mx-auto items-center space-x-2">
+                                                    <FormControl>
+                                                        <Input {...field} />
+                                                    </FormControl>
+                                                    <Label>万円</Label>
+                                                </div>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        control={form.control}
+                                        name="incre_period"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>増額年数</FormLabel>
+                                                <div className="flex w-full max-w-5xl mx-auto items-center space-x-2">
+                                                    <FormControl>
+                                                        <Input {...field} />
+                                                    </FormControl>
+                                                    <Label>年</Label>
+                                                </div>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                </>
+                                ) : null
+                            }
+
+                            <Button type="submit" className="bg-primary-950">計算する</Button>
+                        </form>
+                    </Form>
+                    {
+                        showChart ?
+                            <div className="p-5">
+                                <CommonChart
+                                    finalBalanceChartData={presentCommonData?.chart_data.monthly_data || []}
+                                    totalPrincipal={presentCommonData?.chart_data.total_principal || 0}
+                                    finalBalance={presentCommonData?.chart_data.final_balance || 0}
+                                    type={type}
+                                    backToPresent={presentCommonData?.back_to_present || 0}
+                                />
+                            </div> : null
+                    }
+                </CardContent>
+            </Card>
+            <CheckScreenWidthAlert open={open} setOpen={setOpen} />
+        </>
     )
 };

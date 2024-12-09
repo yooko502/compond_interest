@@ -13,7 +13,7 @@ import { presentMethodsCard } from "../utils/constant"
 export function InvestmentTabs() {
   return (
     <Tabs defaultValue="accumulation">
-      <TabsList className="grid grid-cols-1 mb-24 md:mb-4 md:grid-cols-4 gap-1 bg-transparent md:bg-muted md:gap-2">
+      <TabsList className="grid grid-cols-1 mb-32 md:mb-4 md:grid-cols-4 gap-1 bg-transparent md:bg-muted md:gap-2">
         <TabsTrigger value="accumulation" className="data-[state=active]:bg-muted md:data-[state=active]:bg-[#ffffff]">つみたて投資シミュレーション</TabsTrigger>
         <TabsTrigger value="rate" className="data-[state=active]:bg-muted md:data-[state=active]:bg-[#ffffff]">利回りシミュレーション</TabsTrigger>
         <TabsTrigger value="amount" className="data-[state=active]:bg-muted md:data-[state=active]:bg-[#ffffff]">毎月積立額シミュレーション</TabsTrigger>
