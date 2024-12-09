@@ -27,7 +27,7 @@ import { CommonChart } from "./charts/commonChart"
 import { CheckScreenWidthAlert } from "./screenWidthAlert"
 
 const fixedInvestmentFormSchema = z.object({
-  initial_investment: z.coerce.number().positive(),
+  initial_investment: z.coerce.number().nonnegative(),
   monthly_reserve: z.coerce.number().positive(),
   reserve_periods: z.coerce.number().positive(),
   year_return: z.coerce.number().positive(),
@@ -52,15 +52,41 @@ export default function FixedInvestmentCard() {
   const {finalBalance, showTable} = useFinalBalanceData(formData)
   const [finalBalanceData, setFinalBalanceData] = useState<finalBalanceResultType | null>()
   const [open, setOpen] = useState<boolean>(false)
+  const [shouldListen, setShouldListen] = useState(false);
 
-  const onSubmit = (values: z.infer<typeof fixedInvestmentFormSchema>) => {
-    if(window.screen.width < 768) {
-      setOpen(true)
-      return
+  const onSubmit = (values: z.infer<typeof fixedInvestmentFormSchema>, e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (window.screen.width < 768) {
+        setOpen(true);
+        setShouldListen(true);
+        return
+    } else {
+      setOpen(false);
+      setShouldListen(false);
     }
     setformData(values)
   }
  
+  useEffect(() => {
+    const checkScreenWidth = () => {
+      return window.screen.width < 768
+    };
+  
+    if (shouldListen) {
+      // 初始检测
+      checkScreenWidth();
+      // 添加监听器
+      window.addEventListener('resize', checkScreenWidth);
+      window.addEventListener('orientationchange', checkScreenWidth);
+  
+      return () => {
+        // 清理监听器
+        window.removeEventListener('resize', checkScreenWidth);
+        window.removeEventListener('orientationchange', checkScreenWidth);
+      };
+    }
+  }, [shouldListen]);
+  
   useEffect(() => {
     setFinalBalanceData(finalBalance)
   },[finalBalance])

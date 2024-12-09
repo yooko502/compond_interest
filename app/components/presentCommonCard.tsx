@@ -28,9 +28,9 @@ import { CheckScreenWidthAlert } from "./screenWidthAlert"
 
 const presentCommonFormSchema = z.object({
     target_amount: z.coerce.number().positive(),// 目标金额
-    monthly_reserve: z.coerce.number().nonnegative(), // 毎月の積立額
-    reserve_periods: z.coerce.number().nonnegative(), // 積立期間
-    year_return: z.coerce.number().nonnegative(), // 想定リターン（年率）
+    monthly_reserve: z.coerce.number().positive(), // 毎月の積立額
+    reserve_periods: z.coerce.number().positive(), // 積立期間
+    year_return: z.coerce.number().positive(), // 想定リターン（年率）
     initial_investment: z.coerce.number().nonnegative(), // 默认参数 初期投資額
     increment: z.coerce.number().nonnegative(), // 暂不开放 年間積立増額
     incre_period: z.coerce.number().nonnegative(), // 暂不开放 増額年数
@@ -98,14 +98,40 @@ export default function PresentCommonCard({ type }: { type: string }) {
 
     console.log("plateshow", plateTypeShow)
     const [open, setOpen] = useState<boolean>(false)
+    const [shouldListen, setShouldListen] = useState(false);
 
-    const onSubmit = async (values: z.infer<typeof presentCommonFormSchema>) => {
+    const onSubmit = async (values: z.infer<typeof presentCommonFormSchema>, e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         if (window.screen.width < 768) {
-            setOpen(true)
+            setOpen(true);
+            setShouldListen(true);
             return
+        } else {
+          setOpen(false);
+          setShouldListen(false);
         }
         setFormValus(values)
     }
+
+    useEffect(() => {
+      const checkScreenWidth = () => {
+        return window.screen.width < 768
+      };
+    
+      if (shouldListen) {
+        // 初始检测
+        checkScreenWidth();
+        // 添加监听器
+        window.addEventListener('resize', checkScreenWidth);
+        window.addEventListener('orientationchange', checkScreenWidth);
+    
+        return () => {
+          // 清理监听器
+          window.removeEventListener('resize', checkScreenWidth);
+          window.removeEventListener('orientationchange', checkScreenWidth);
+        };
+      }
+    }, [shouldListen]);
 
     useEffect(() => {
         if (formValus) {
