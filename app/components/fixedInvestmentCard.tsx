@@ -54,8 +54,7 @@ export default function FixedInvestmentCard() {
   const [open, setOpen] = useState<boolean>(false)
   const [shouldListen, setShouldListen] = useState(false);
 
-  const onSubmit = (values: z.infer<typeof fixedInvestmentFormSchema>, e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onSubmit = (values: z.infer<typeof fixedInvestmentFormSchema>) => {
     if (window.screen.width < 768) {
         setOpen(true);
         setShouldListen(true);
