@@ -55,7 +55,7 @@ export default function FixedInvestmentCard() {
   const [shouldListen, setShouldListen] = useState(false);
 
   const onSubmit = (values: z.infer<typeof fixedInvestmentFormSchema>) => {
-    if (window.screen.width < 768) {
+    if (window.screen.orientation.angle === 90 || window.screen.orientation.angle === -90) {
         setOpen(true);
         setShouldListen(true);
         return
@@ -68,7 +68,7 @@ export default function FixedInvestmentCard() {
  
   useEffect(() => {
     const checkScreenWidth = () => {
-      return window.screen.width < 768
+      return window.screen.orientation.angle === 90 || window.screen.orientation.angle === -90
     };
   
     if (shouldListen) {
