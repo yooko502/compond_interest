@@ -100,8 +100,7 @@ export default function PresentCommonCard({ type }: { type: string }) {
     const [open, setOpen] = useState<boolean>(false)
     const [shouldListen, setShouldListen] = useState(false);
 
-    const onSubmit = async (values: z.infer<typeof presentCommonFormSchema>, e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const onSubmit = async (values: z.infer<typeof presentCommonFormSchema>) => {
         if (window.screen.width < 768) {
             setOpen(true);
             setShouldListen(true);
