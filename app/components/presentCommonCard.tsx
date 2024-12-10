@@ -101,20 +101,20 @@ export default function PresentCommonCard({ type }: { type: string }) {
     const [shouldListen, setShouldListen] = useState(false);
 
     const onSubmit = async (values: z.infer<typeof presentCommonFormSchema>) => {
-        if (window.screen.orientation.angle !== 90 || window.screen.orientation.angle !== -90) {
+        if (window.screen.orientation.angle === 90 || window.screen.orientation.angle === -90) {
+          setOpen(false);
+          setShouldListen(false);
+        } else {
             setOpen(true);
             setShouldListen(true);
             return
-        } else {
-          setOpen(false);
-          setShouldListen(false);
         }
         setFormValus(values)
     }
 
     useEffect(() => {
       const checkScreenWidth = () => {
-        return window.screen.orientation.angle !== 90 || window.screen.orientation.angle !== -90
+        return window.screen.orientation.angle === 90 || window.screen.orientation.angle === -90
       };
     
       if (shouldListen) {
