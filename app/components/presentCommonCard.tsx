@@ -42,10 +42,10 @@ export default function PresentCommonCard({ type }: { type: string }) {
     const form = useForm<z.infer<typeof presentCommonFormSchema>>({
         resolver: zodResolver(presentCommonFormSchema),
         defaultValues: {
-            target_amount: 1000,
-            monthly_reserve: 0,
+            target_amount: 3000,
+            monthly_reserve: 10,
             reserve_periods: 1,
-            year_return: 0,
+            year_return: 10,
             //
             initial_investment: 0,
             incre_period: 0,
@@ -101,7 +101,11 @@ export default function PresentCommonCard({ type }: { type: string }) {
     const [shouldListen, setShouldListen] = useState(false);
 
     const onSubmit = async (values: z.infer<typeof presentCommonFormSchema>) => {
-        if (window.screen.orientation.angle === 90 || window.screen.orientation.angle === -90) {
+        console.log("==== form values ====", values)
+        if (window.screen.orientation.type === 'landscape-primary' || 
+            window.screen.orientation.angle === 90 ||
+            window.screen.orientation.angle === -90
+        ) {
           setOpen(false);
           setShouldListen(false);
         } else {
@@ -114,7 +118,9 @@ export default function PresentCommonCard({ type }: { type: string }) {
 
     useEffect(() => {
       const checkScreenWidth = () => {
-        return window.screen.orientation.angle === 90 || window.screen.orientation.angle === -90
+        return window.screen.orientation.type === 'landscape-primary' ||
+            window.screen.orientation.angle === 90 ||
+            window.screen.orientation.angle === -90
       };
     
       if (shouldListen) {

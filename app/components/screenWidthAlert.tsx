@@ -22,7 +22,6 @@ export function CheckScreenWidthAlert(props: screenWidthAlertProps) {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel className="bg-primary-50"onClick={()=>props.setOpen(false)}>いいえ</AlertDialogCancel>
             <AlertDialogAction className="bg-primary-950" onClick={()=>props.setOpen(false)}>はい</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
