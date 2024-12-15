@@ -1,0 +1,42 @@
+{
+    "hearder_title": "投資シミュレーション",
+    "tags_title":{
+        "accumulation_investment_simulation": "つみたて投資シミュレーション",
+        "yield_simulation": "利回りシミュレーション",
+        "monthly_savings_simulation": "毎月積立額シミュレーション",
+        "accumulation_period_simulation": "積立期間シミュレーション"
+    },
+    "tags_detail": {
+        "cost_in_the_future": "将来いくらになるかを知りたい",
+        "cost_in_the_future_detail": "つみたて投資すると将来いくらになる？",
+        "yield": "利回り",
+        "calculate_the_yield_detail": "目標額を達成するための利回りを計算する",
+        "monthly_savings_amount": "毎月積立額",
+        "monthly_savings_amount_detail": "目標額を達成するための毎月積立額を計算する",
+        "accumulation_period": "積立期間",
+        "accumulation_period_detail": "目標額を達成するための積立期間を計算する",
+        "target_amount": "目標額",
+        "initial_investment_amount": "初期投資額",
+        "expected_return": "想定リターン（年率）",
+        "annual_savings_increase": "年間積立増額",
+        "number_increase": "増額年数",
+        "monney": "万円",
+        "years": "年",
+        "percent": "%"
+    },
+    "button": {
+        "calculate": "計算する"
+    },
+    "message": {
+        "portrait_mode": "スマホを縦向きで使用していますか?",
+        "yes": "はい",
+        "landscape_orientation": "チャートを最適に表示するには、スマホを横向きで使用してください。"
+    },
+    "chart": {
+        "asset_amount": "予想資産額",
+        "investment_principal": "投資元本",
+        "principal_increased": "積立元本 + 増えた額",
+        "service_notice": "ご利用にあたっての留意事項",
+        "calculated_figures_notice": "計算された数値は、あくまでもシミュレーションであり、将来の市場環境の変動や運用成果等を示唆および保証するものではありません。また、税金、手数料、費用等を考慮しておりません。"
+    }
+}

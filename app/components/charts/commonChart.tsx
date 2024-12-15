@@ -19,24 +19,34 @@ import {
 } from "@/components/ui/chart"
 import { finalBalanceChartType, FixedInvestmentChartParams } from "../../utils/types"
 import { useMemo, useState } from "react"
-import { presenCommonUnit, presentCommonTitle } from "@/app/utils/constant"
-
-
-const chartConfig = {
-    Balance: {
-        label: "予想資産額",
-        color: "hsl(var(--chart-2))",
-    },
-    Principal: {
-        label: "投資元本",
-        color: "hsl(var(--chart-1))",
-    },
-} satisfies ChartConfig
+import { useTranslation } from "react-i18next"
 
 export function CommonChart(props: FixedInvestmentChartParams) {
     const chartData: finalBalanceChartType[] = props.finalBalanceChartData
     const [firstDate, setFirstDate] = useState<number>()
     const [lastDate, setLastDate] = useState<number>()
+    const { t } = useTranslation('common')
+    const presentCommonTitle: { [key: string]: string } = {
+        "amount": t("tags_detail.monthly_savings_amount"),
+        "rate": t("tags_detail.yield"),
+        "horizon": t("tags_detail.accumulation_period")
+    }
+    const presenCommonUnit: {[key: string]: string} = {
+        "amount": t("tags_detail.monney"),
+        "rate": t("tags_detail.percent"),
+        "horizon": t("tags_detail.years")
+      }
+
+    const chartConfig = {
+        Balance: {
+            label: t('chart.asset_amount'),
+            color: "hsl(var(--chart-2))",
+        },
+        Principal: {
+            label: t('chart.investment_principal'),
+            color: "hsl(var(--chart-1))",
+        },
+    } satisfies ChartConfig
 
     useMemo(() => {
         if (chartData === undefined) return
@@ -44,6 +54,7 @@ export function CommonChart(props: FixedInvestmentChartParams) {
         setFirstDate(chartData[0].Date)
         setLastDate(chartData[chartData.length - 1].Date)
     }, [chartData])
+    
 
     console.log(lastDate)
 
@@ -51,7 +62,7 @@ export function CommonChart(props: FixedInvestmentChartParams) {
         <Card>
             <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
                 <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
-                    <CardTitle>積立元本 + 増えた額</CardTitle>
+                    <CardTitle>{t('chart.investment_principal')}</CardTitle>
                     <CardDescription>
                         {moment(firstDate).format("YYYY-MM")} —— {moment(lastDate).format("YYYY-MM")}
                     </CardDescription>
@@ -77,20 +88,20 @@ export function CommonChart(props: FixedInvestmentChartParams) {
                         className="relative z-30 inline-flex flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
                     >
                         <span className="text-xs text-muted-foreground">
-                            投資元本
+                            {t('chart.asset_amount')}
                         </span>
                         <span className="text-lg font-bold leading-none sm:text-3xl">
-                            {props.totalPrincipal}<span className="text-xs font-bold leading-none sm:text-xs">万円</span>
+                            {props.totalPrincipal}<span className="text-xs font-bold leading-none sm:text-xs">{t('tags_detail.monney')}</span>
                         </span>
                     </button>
                     <button
                         className="relative z-30 inline-flex flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
                     >
                         <span className="text-xs text-muted-foreground">
-                            予想資産額
+                            {t('chart.investment_principal')}
                         </span>
                         <span className="text-lg font-bold leading-none sm:text-3xl">
-                            {props.finalBalance}<span className="text-xs font-bold leading-none sm:text-xs">万円</span>
+                            {props.finalBalance}<span className="text-xs font-bold leading-none sm:text-xs">{t('tags_detail.monney')}</span>
                         </span>
                     </button>
                 </div>
@@ -148,10 +159,10 @@ export function CommonChart(props: FixedInvestmentChartParams) {
                 <div className="flex w-full items-start gap-2 text-sm">
                     <div className="grid gap-2">
                         <div className="flex items-center gap-2 font-medium leading-none">
-                            ご利用にあたっての留意事項 <BadgeInfo className="h-4 w-4" />
+                            {t('chart.service_notice')} <BadgeInfo className="h-4 w-4" />
                         </div>
                         <div className="flex items-center gap-2 leading-none text-muted-foreground">
-                            計算された数値は、あくまでもシミュレーションであり、将来の市場環境の変動や運用成果等を示唆および保証するものではありません。また、税金、手数料、費用等を考慮しておりません。
+                            {t('chart.calculated_figures_notice')}
                         </div>
                     </div>
                 </div>

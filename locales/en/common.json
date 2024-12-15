@@ -1,0 +1,42 @@
+{
+    "hearder_title": "Investment simulation",
+    "tags_title":{
+        "accumulation_investment_simulation": "Accumulation investment simulation",
+        "yield_simulation": "Yield simulation",
+        "monthly_savings_simulation": "Monthly savings simulation",
+        "accumulation_period_simulation": "Accumulation period simulation"
+    },
+    "tags_detail": {
+        "cost_in_the_future": "I want to know how much it will cost in the future",
+        "cost_in_the_future_detail": "How much will investments make in the future?",
+        "yield": "Yield",
+        "calculate_the_yield_detail": "Calculate the yield to reach your goal",
+        "monthly_savings_amount": "Monthly savings amount",
+        "monthly_savings_amount_detail": "Calculate the monthly savings amount to reach your goal",
+        "accumulation_period": "Accumulation period",
+        "accumulation_period_detail": "Calculate how long it will take to reach your savings goal",
+        "target_amount": "Target amount",
+        "initial_investment_amount": "Initial investment amount",
+        "expected_return": "Expected return (annualized)",
+        "annual_savings_increase": "Annual savings increase",
+        "number_increase": "Number of years of increase",
+        "monney": "dollars",
+        "years": "years",
+        "percent": "%"
+    },
+    "button": {
+        "calculate": "Calculate"
+    },
+    "message": {
+        "portrait_mode": "Are you using your phone in portrait mode??",
+        "yes": "Yes",
+        "landscape_orientation": "For best viewing of charts, use your phone in landscape orientation."
+    },
+    "chart": {
+        "asset_amount": "予想資産額",
+        "investment_principal": "投資元本",
+        "principal_increased": "Principal amount + Increased amount",
+        "service_notice": "Important points to note when using this service",
+        "calculated_figures_notice": "The calculated figures are merely simulations and do not indicate or guarantee future market fluctuations or investment results, etc. Also, taxes, fees, expenses, etc. are not taken into consideration."
+    }
+}

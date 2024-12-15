@@ -20,11 +20,12 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Label } from "@/components/ui/label"
-import { apiBaseUrl, presentCommonDescription, presentCommonTitle } from "../utils/constant"
+import { apiBaseUrl } from "../utils/constant"
 import { PresentCommonResultType } from "../utils/types"
 import { useEffect, useState } from "react"
 import { CommonChart } from "./charts/commonChart"
 import { CheckScreenWidthAlert } from "./screenWidthAlert"
+import { useTranslation } from "react-i18next"
 
 const presentCommonFormSchema = z.object({
     target_amount: z.coerce.number().positive(),// 目标金额
@@ -39,6 +40,19 @@ const presentCommonFormSchema = z.object({
 
 export default function PresentCommonCard({ type }: { type: string }) {
     console.log("type", type)
+    const { t } = useTranslation('common')
+    const presentCommonTitle: { [key: string]: string } = {
+        "amount": t("tags_detail.monthly_savings_amount"),
+        "rate": t("tags_detail.yield"),
+        "horizon": t("tags_detail.accumulation_period")
+    }
+      
+    const presentCommonDescription: { [key: string]: string } = {
+        "amount": t("tags_detail.monthly_savings_amount_detail"),
+        "rate": t("tags_detail.calculate_the_yield_detail"),
+        "horizon": t("tags_detail.accumulation_period_detail")
+    }
+            
     const form = useForm<z.infer<typeof presentCommonFormSchema>>({
         resolver: zodResolver(presentCommonFormSchema),
         defaultValues: {
@@ -178,12 +192,12 @@ export default function PresentCommonCard({ type }: { type: string }) {
                                 name="target_amount"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>目標額</FormLabel>
+                                        <FormLabel>{t("tags_detail.target_amount")}</FormLabel>
                                         <div className="flex w-full max-w-5xl mx-auto items-center space-x-2">
                                             <FormControl>
                                                 <Input {...field} />
                                             </FormControl>
-                                            <Label>万円</Label>
+                                            <Label>{t("tags_detail.monney")}</Label>
                                         </div>
                                         <FormMessage />
                                     </FormItem>
@@ -194,12 +208,12 @@ export default function PresentCommonCard({ type }: { type: string }) {
                                 name="monthly_reserve"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>毎月の積立額</FormLabel>
+                                        <FormLabel>{t("tags_detail.monthly_savings_amount")}</FormLabel>
                                         <div className="flex w-full max-w-5xl mx-auto items-center space-x-2">
                                             <FormControl>
                                                 <Input {...field} />
                                             </FormControl>
-                                            <Label>万円</Label>
+                                            <Label>{t("tags_detail.monney")}</Label>
                                         </div>
                                         <FormMessage />
                                     </FormItem>
@@ -210,12 +224,12 @@ export default function PresentCommonCard({ type }: { type: string }) {
                                 name="reserve_periods"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>積立期間</FormLabel>
+                                        <FormLabel>{t("tags_detail.accumulation_period")}</FormLabel>
                                         <div className="flex w-full max-w-5xl mx-auto items-center space-x-2">
                                             <FormControl>
                                                 <Input {...field} />
                                             </FormControl>
-                                            <Label>年</Label>
+                                            <Label>{t("tags_detail.years")}</Label>
                                         </div>
                                         <FormMessage />
                                     </FormItem>
@@ -226,12 +240,12 @@ export default function PresentCommonCard({ type }: { type: string }) {
                                 name="year_return"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>想定リターン（年率）</FormLabel>
+                                        <FormLabel>{t("tags_detail.expected_return")}</FormLabel>
                                         <div className="flex w-full max-w-5xl mx-auto items-center space-x-2">
                                             <FormControl>
                                                 <Input {...field} />
                                             </FormControl>
-                                            <Label>%</Label>
+                                            <Label>{t("tags_detail.percent")}</Label>
                                         </div>
                                         <FormMessage />
                                     </FormItem>
@@ -244,12 +258,12 @@ export default function PresentCommonCard({ type }: { type: string }) {
                                         name="initial_investment"
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>初期投資額</FormLabel>
+                                                <FormLabel>{t("tags_detail.initial_investment_amount")}</FormLabel>
                                                 <div className="flex w-full max-w-5xl mx-auto items-center space-x-2">
                                                     <FormControl>
                                                         <Input {...field} />
                                                     </FormControl>
-                                                    <Label>万円</Label>
+                                                    <Label>{t("tags_detail.monney")}</Label>
                                                 </div>
                                                 <FormMessage />
                                             </FormItem>
@@ -260,12 +274,12 @@ export default function PresentCommonCard({ type }: { type: string }) {
                                         name="increment"
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>年間積立増額</FormLabel>
+                                                <FormLabel>{t("tags_detail.annual_savings_increase")}</FormLabel>
                                                 <div className="flex w-full max-w-5xl mx-auto items-center space-x-2">
                                                     <FormControl>
                                                         <Input {...field} />
                                                     </FormControl>
-                                                    <Label>万円</Label>
+                                                    <Label>{t("tags_detail.monney")}</Label>
                                                 </div>
                                                 <FormMessage />
                                             </FormItem>
@@ -276,12 +290,12 @@ export default function PresentCommonCard({ type }: { type: string }) {
                                         name="incre_period"
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>増額年数</FormLabel>
+                                                <FormLabel>{t("tags_detail.number_increase")}</FormLabel>
                                                 <div className="flex w-full max-w-5xl mx-auto items-center space-x-2">
                                                     <FormControl>
                                                         <Input {...field} />
                                                     </FormControl>
-                                                    <Label>年</Label>
+                                                    <Label>{t("tags_detail.years")}</Label>
                                                 </div>
                                                 <FormMessage />
                                             </FormItem>
@@ -291,7 +305,7 @@ export default function PresentCommonCard({ type }: { type: string }) {
                                 ) : null
                             }
 
-                            <Button type="submit" className="bg-primary-950">計算する</Button>
+                            <Button type="submit" className="bg-primary-950">{t("button.calculate")}</Button>
                         </form>
                     </Form>
                     {
