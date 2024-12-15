@@ -25,6 +25,7 @@ import { useEffect, useState } from "react"
 import { finalBalanceResultType, fixedInvestmentFormType } from "../utils/types"
 import { CommonChart } from "./charts/commonChart"
 import { CheckScreenWidthAlert } from "./screenWidthAlert"
+import { useTranslation } from "react-i18next"
 
 const fixedInvestmentFormSchema = z.object({
   initial_investment: z.coerce.number().nonnegative(),
@@ -36,6 +37,7 @@ const fixedInvestmentFormSchema = z.object({
 })
 
 export default function FixedInvestmentCard() {
+  const { t } = useTranslation('common')
   const form = useForm<z.infer<typeof fixedInvestmentFormSchema>>({
     resolver: zodResolver(fixedInvestmentFormSchema),
     defaultValues: {
@@ -99,9 +101,9 @@ export default function FixedInvestmentCard() {
     <>
     <Card className="p-6 bg-primary-50">
       <CardHeader>
-        <CardTitle>将来いくらになるかを知りたい</CardTitle>
+        <CardTitle>{t('tags_detail.cost_in_the_future')}</CardTitle>
         <CardDescription>
-          つみたて投資すると将来いくらになる？
+          {t('tags_detail.cost_in_the_future_detail')}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-2">
@@ -112,12 +114,12 @@ export default function FixedInvestmentCard() {
               name="initial_investment"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>初期投資額</FormLabel>
+                  <FormLabel>{t('tags_detail.initial_investment_amount')}</FormLabel>
                   <div className="flex w-full max-w-5xl mx-auto items-center space-x-2">
                     <FormControl>
                       <Input type="number" placeholder="100" {...field} />
                     </FormControl>
-                    <Label>万円</Label>
+                    <Label>{t("tags_detail.monney")}</Label>
                   </div>
                   <FormMessage />
                 </FormItem>
@@ -128,12 +130,12 @@ export default function FixedInvestmentCard() {
               name="monthly_reserve"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>毎月の積立額</FormLabel>
+                  <FormLabel>{t("tags_detail.monthly_savings_amount")}</FormLabel>
                   <div className="flex w-full max-w-5xl mx-auto items-center space-x-2">
                     <FormControl>
                       <Input type="number" placeholder="10" {...field} />
                     </FormControl>
-                    <Label>万円</Label>
+                    <Label>{t("tags_detail.monney")}</Label>
                   </div>
                   <FormMessage />
                 </FormItem>
@@ -144,12 +146,12 @@ export default function FixedInvestmentCard() {
               name="reserve_periods"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>積立期間</FormLabel>
+                  <FormLabel>{t("tags_detail.accumulation_period")}</FormLabel>
                   <div className="flex w-full max-w-5xl mx-auto items-center space-x-2">
                     <FormControl>
                       <Input type="number" placeholder="10" {...field} />
                     </FormControl>
-                    <Label>年</Label>
+                    <Label>{t("tags_detail.years")}</Label>
                   </div>
                   <FormMessage />
                 </FormItem>
@@ -160,12 +162,12 @@ export default function FixedInvestmentCard() {
               name="year_return"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>想定リターン（年率）</FormLabel>
+                  <FormLabel>{t("tags_detail.expected_return")}</FormLabel>
                   <div className="flex w-full max-w-5xl mx-auto items-center space-x-2">
                     <FormControl>
                       <Input type="number" placeholder="3" {...field} />
                     </FormControl>
-                    <Label>%</Label>
+                    <Label>{t("tags_detail.percent")}</Label>
                   </div>
                   <FormMessage />
                 </FormItem>
@@ -176,12 +178,12 @@ export default function FixedInvestmentCard() {
               name="increment"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>年間積立増額</FormLabel>
+                  <FormLabel>{t("tags_detail.annual_savings_increase")}</FormLabel>
                   <div className="flex w-full max-w-5xl mx-auto items-center space-x-2">
                     <FormControl>
                       <Input type="number" placeholder="0" {...field} />
                     </FormControl>
-                    <Label>万円</Label>
+                    <Label>{t("tags_detail.monney")}</Label>
                   </div>
                   <FormMessage />
                 </FormItem>
@@ -192,18 +194,18 @@ export default function FixedInvestmentCard() {
               name="incre_period"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>増額年数</FormLabel>
+                  <FormLabel>{t("tags_detail.number_increase")}</FormLabel>
                   <div className="flex w-full max-w-5xl mx-auto items-center space-x-2">
                     <FormControl>
                       <Input type="number" placeholder="0" {...field} />
                     </FormControl>
-                    <Label>年</Label>
+                    <Label>{t("tags_detail.years")}</Label>
                   </div>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type="submit" className="bg-primary-950">計算する</Button>
+            <Button type="submit" className="bg-primary-950">{t("button.calculate")}</Button>
           </form>
         </Form>
         {

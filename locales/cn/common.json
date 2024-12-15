@@ -1,0 +1,42 @@
+{
+    "hearder_title": "投资模拟器",
+    "tags_title": {
+        "accumulation_investment_simulation": "定投投资计算",
+        "yield_simulation": "收益率计算",
+        "monthly_savings_simulation": "每月存款金额计算",
+        "accumulation_period_simulation": "定投期间计算"
+    },
+    "tags_detail": {
+        "cost_in_the_future": "未来资产预测",
+        "cost_in_the_future_detail": "进行定投投资后未来会有多少钱？",
+        "yield": "收益率",
+        "calculate_the_yield_detail": "计算达到目标金额所需的收益率",
+        "monthly_savings_amount": "每月存款金额",
+        "monthly_savings_amount_detail": "计算达到目标金额所需的每月存款金额",
+        "accumulation_period": "定投期间",
+        "accumulation_period_detail": "计算达到目标金额所需的累计期间",
+        "target_amount": "目标金额",
+        "initial_investment_amount": "初始投资金额",
+        "expected_return": "预期回报率（年率）",
+        "annual_savings_increase": "年度存款增额",
+        "number_increase": "增额年数",
+        "monney": "元",
+        "years": "年",
+        "percent": "%"
+    },
+    "button": {
+        "calculate": "计算"
+    },
+    "message": {
+        "portrait_mode": "是否在使用竖屏模式？",
+        "yes": "是",
+        "landscape_orientation": "为了图表的显示效果，请横屏使用。"
+    },
+    "chart": {
+        "asset_amount": "预计资产金额",
+        "investment_principal": "投资本金",
+        "principal_increased": "累计本金及收益",
+        "service_notice": "使用须知",
+        "calculated_figures_notice": "模拟计算的结果仅供参考，不代表也不保证未来市场环境变化和投资收益。计算结果未考虑税费、手续费等相关费用。"
+    }
+}
