@@ -4,7 +4,8 @@
         "accumulation_investment_simulation": "つみたて投資シミュレーション",
         "yield_simulation": "利回りシミュレーション",
         "monthly_savings_simulation": "毎月積立額シミュレーション",
-        "accumulation_period_simulation": "積立期間シミュレーション"
+        "accumulation_period_simulation": "積立期間シミュレーション",
+        "withdrawal_simulation": "取り崩しシミュレーション"
     },
     "tags_detail": {
         "cost_in_the_future": "将来いくらになるかを知りたい",
@@ -22,7 +23,17 @@
         "number_increase": "増額年数",
         "monney": "万円",
         "years": "年",
-        "percent": "%"
+        "percent": "%",
+        "withdrawal_simulation": "取り崩し",
+        "withdrawal_simulation_detail": "取り崩し開始年齢や、初期投資額などを想定し、シミュレーションしてみましょう！",
+        "withdrawal_simulation_method_title": "取り崩し方法を選択してください",
+        "how_many_years": "何年間取り崩し",
+        "initial_amount": "必要な初期投資額",
+        "withdrawable_amount": "取り崩し可能額",
+        "initial_balance": "金融資産額",
+        "monthly_withdrawal": "毎月の取り崩し額",
+        "withdrawal_years": "取り崩し年数"
+
     },
     "button": {
         "calculate": "計算する"
@@ -37,6 +48,11 @@
         "investment_principal": "投資元本",
         "principal_increased": "積立元本 + 増えた額",
         "service_notice": "ご利用にあたっての留意事項",
-        "calculated_figures_notice": "計算された数値は、あくまでもシミュレーションであり、将来の市場環境の変動や運用成果等を示唆および保証するものではありません。また、税金、手数料、費用等を考慮しておりません。"
+        "calculated_figures_notice": "計算された数値は、あくまでもシミュレーションであり、将来の市場環境の変動や運用成果等を示唆および保証するものではありません。また、税金、手数料、費用等を考慮しておりません。",
+        "invest": "投資した場合",
+        "no_invest": "投資せず場合",
+        "monthly": "月",
+        "all_amount": "資産額",
+        "unit_monthly": "ヶ月"
     }
 }

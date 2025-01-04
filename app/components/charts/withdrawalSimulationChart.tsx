@@ -1,107 +1,78 @@
-"use client"
-
+import { withdrawalSimulationChartProps, withdrawalSimulationMonthlyType } from "@/app/utils/types"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import { BadgeInfo } from "lucide-react"
-import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts"
-import moment from 'moment'
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"
-import {
-    ChartConfig,
-    ChartContainer,
-    ChartTooltip,
-    ChartTooltipContent,
-} from "@/components/ui/chart"
-import { finalBalanceChartType, FixedInvestmentChartParams } from "../../utils/types"
+import moment from "moment"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts"
 
-export function CommonChart(props: FixedInvestmentChartParams) {
-    const chartData: finalBalanceChartType[] = props.finalBalanceChartData
-    const [firstDate, setFirstDate] = useState<number>()
-    const [lastDate, setLastDate] = useState<number>()
+export const WithdrawalSimulationChart = (props: withdrawalSimulationChartProps) => {
+    const chartData: withdrawalSimulationMonthlyType[] = props.monthly_data
+    // const [firstDate, setFirstDate] = useState<number>()
+    // const [lastDate, setLastDate] = useState<number>()
     const { t } = useTranslation('common')
-    const presentCommonTitle: { [key: string]: string } = {
-        "amount": t("tags_detail.monthly_savings_amount"),
-        "rate": t("tags_detail.yield"),
-        "horizon": t("tags_detail.accumulation_period")
+    const investTitle: { [key: string]: string } = {
+        "how_many_years": `${(props.invest_years as number[])[0]}${t("tags_detail.years")} ${(props.invest_years as number[])[1]}${t("chart.monthly")}`,
+        "withdrawable_amount": `${props.monthly_withdrawal.toFixed(0)}${t("tags_detail.monney")}`,
+        "initial_amount": `${props.initial_balance.toFixed(0)}${t("tags_detail.monney")}`,
     }
-    const presenCommonUnit: {[key: string]: string} = {
-        "amount": t("tags_detail.monney"),
-        "rate": t("tags_detail.percent"),
-        "horizon": t("tags_detail.years")
+    const noInvestTitle: {[key: string]: string} = {
+        "how_many_years": `${(props.no_invest as number[])[0]}${t("tags_detail.years")} ${(props.no_invest as number[])[1]}${t("chart.monthly")}`,
+        "withdrawable_amount": `${Array.isArray(props.no_invest) ? "" : (props.no_invest as number).toFixed(0)}${t("tags_detail.monney")}`,
+        "initial_amount": `${Array.isArray(props.no_invest) ? "" : (props.no_invest as number).toFixed(0)}${t("tags_detail.monney")}`,
       }
 
     const chartConfig = {
         Balance: {
-            label: t('chart.asset_amount'),
+            label: t('chart.all_amount'),
             color: "hsl(var(--chart-2))",
-        },
-        Principal: {
-            label: t('chart.investment_principal'),
-            color: "hsl(var(--chart-1))",
         },
     } satisfies ChartConfig
 
-    useMemo(() => {
-        if (chartData === undefined) return
-        if (chartData.length === 0) return
-        setFirstDate(chartData[0].Date)
-        setLastDate(chartData[chartData.length - 1].Date)
-    }, [chartData])
-    
 
-    console.log(lastDate)
 
     return (
         <Card>
             <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
-                <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
-                    <CardTitle>{t('chart.principal_increased')}</CardTitle>
+                 <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
+                    {/* <CardTitle>{t('chart.principal_increased')}</CardTitle> */}
                     <CardDescription>
-                        {moment(firstDate).format("YYYY-MM")} —— {moment(lastDate).format("YYYY-MM")}
+                        {/* {moment(firstDate).format("YYYY-MM")} —— {moment(lastDate).format("YYYY-MM")} */}
                     </CardDescription>
                 </div>
                 <div className="flex">
-                    {
-                        props.type ? (
-                            <button
-                                className="relative z-30 inline-flex flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
-                            >
-                                <span className="text-xs text-muted-foreground">
-                                    {presentCommonTitle[props.type]}
-                                </span>
-                                <span className="text-lg font-bold leading-none sm:text-3xl">
-                                    {props.backToPresent}<span className="text-xs font-bold leading-none sm:text-xs">
-                                        {presenCommonUnit[props.type]}
-                                    </span>
-                                </span>
-                            </button>
-                        ) : null
-                    }
                     <button
                         className="relative z-30 inline-flex flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
                     >
                         <span className="text-xs text-muted-foreground">
-                            {t('chart.asset_amount')}
+                            {t('chart.invest')}
                         </span>
                         <span className="text-lg font-bold leading-none sm:text-3xl">
-                            {props.totalPrincipal}<span className="text-xs font-bold leading-none sm:text-xs">{t('tags_detail.monney')}</span>
+                        {
+                                props.type ? (
+                                    <>
+                                    {investTitle[props.type]}
+                                    </>
+                                ) : null
+                            }
                         </span>
                     </button>
                     <button
                         className="relative z-30 inline-flex flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
                     >
                         <span className="text-xs text-muted-foreground">
-                            {t('chart.investment_principal')}
+                            {t('chart.no_invest')}
                         </span>
                         <span className="text-lg font-bold leading-none sm:text-3xl">
-                            {props.finalBalance}<span className="text-xs font-bold leading-none sm:text-xs">{t('tags_detail.monney')}</span>
+                            {
+                                props.type ? (
+                                    <>
+                                    {noInvestTitle[props.type]}
+                                    </>
+                                ) : null
+                            }
+                           
                         </span>
                     </button>
                 </div>
@@ -118,22 +89,22 @@ export function CommonChart(props: FixedInvestmentChartParams) {
                     >
                         <CartesianGrid vertical={false} />
                         <XAxis
-                            dataKey="Date"
+                            dataKey="Month"
                             tickLine={false}
                             axisLine={true}
                             tickMargin={8}
                             minTickGap={64}
                             tickFormatter={(value) => {
-                                return moment(value).format("YYYY-MM")
+                                return `${value}ヶ月`
                             }}
                         />
                         <ChartTooltip cursor={false} content={
-                            ({ active, payload, label }) => {
+                            ({ active, payload, label}) => {
                                 return (
                                     <ChartTooltipContent
                                         active={active}
                                         payload={payload}
-                                        label={moment(label).format("YYYY-MM")}
+                                        label={`${label}${t("chart.unit_monthly")}`}
                                         indicator="dot"
                                     />
                                 )
@@ -150,8 +121,7 @@ export function CommonChart(props: FixedInvestmentChartParams) {
                                 <stop offset="95%" stopColor="var(--color-Balance)" stopOpacity={0} />
                             </linearGradient>
                         </defs>
-                        <Area type="natural" dataKey="Principal" stroke="var(--color-Principal)" fillOpacity={1} fill="url(#colorPrincipal)" />
-                        <Area type="natural" dataKey="Balance" stroke="var(--color-Balance)" fillOpacity={0.3} fill="url(#colorBalance)" />
+                        <Area type="natural" dataKey="Balance" stroke="var(--color-Balance)" fillOpacity={1} fill="url(#colorBalance)" />
                     </AreaChart>
                 </ChartContainer>
             </CardContent>

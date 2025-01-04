@@ -52,3 +52,24 @@ export type screenWidthAlertProps = {
     open: boolean,
     setOpen: (open: boolean)=>void
 }
+
+export type withDrawalSimulationFormType = {
+    annual_return: number,
+    initial_balance?: number,
+    monthly_withdrawal?: number,
+    years?: number
+}
+
+export type withdrawalSimulationChartProps = {
+    initial_balance: number,
+    invest_years: number | number[],
+    monthly_data: withdrawalSimulationMonthlyType[],
+    monthly_withdrawal: number,
+    no_invest: number | number[],
+    type?: string
+}
+
+export type withdrawalSimulationMonthlyType = {
+    Balance: number,
+    Month: number
+}

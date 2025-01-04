@@ -4,7 +4,8 @@
         "accumulation_investment_simulation": "Accumulation investment simulation",
         "yield_simulation": "Yield simulation",
         "monthly_savings_simulation": "Monthly savings simulation",
-        "accumulation_period_simulation": "Accumulation period simulation"
+        "accumulation_period_simulation": "Accumulation period simulation",
+        "withdrawal_simulation": "Withdrawal Simulation"
     },
     "tags_detail": {
         "cost_in_the_future": "I want to know how much it will cost in the future",
@@ -22,7 +23,16 @@
         "number_increase": "Number of years of increase",
         "monney": "dollars",
         "years": "years",
-        "percent": "%"
+        "percent": "%",
+        "withdrawal_simulation": "withdrawal",
+        "withdrawal_simulation_detail": "Let's run a simulation based on factors such as the age at which you will start withdrawing funds and the amount of your initial investment!",
+        "withdrawal_simulation_method_title": "Please select the withdrawal simulation method",
+        "how_many_years": "How many years have you withdrawn money?",
+        "initial_amount": "Required initial investment amount",
+        "withdrawable_amount": "Withdrawable amount",
+        "initial_balance": "Financial assets amount",
+        "monthly_withdrawal": "Monthly withdrawal amount",
+        "withdrawal_years": "Number of years of withdrawal"
     },
     "button": {
         "calculate": "Calculate"
@@ -37,6 +47,11 @@
         "investment_principal": "Investment dollars",
         "principal_increased": "Principal amount + Increased amount",
         "service_notice": "Important points to note when using this service",
-        "calculated_figures_notice": "The calculated figures are merely simulations and do not indicate or guarantee future market fluctuations or investment results, etc. Also, taxes, fees, expenses, etc. are not taken into consideration."
+        "calculated_figures_notice": "The calculated figures are merely simulations and do not indicate or guarantee future market fluctuations or investment results, etc. Also, taxes, fees, expenses, etc. are not taken into consideration.",
+        "invest": "If you invest",
+        "no_invest": "Without investment",
+        "monthly": "month",
+        "all_amount": "Asset amount",
+        "unit_monthly": "months"
     }
 }

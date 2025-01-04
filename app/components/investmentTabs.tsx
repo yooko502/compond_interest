@@ -9,17 +9,19 @@ import FixedInvestmentCard from "./fixedInvestmentCard"
 import PresentCommonCard from "./presentCommonCard"
 // import MonthlySavingsCard from "./monthlySavingsCard"
 import { presentMethodsCard } from "../utils/constant"
+import WithdrawalSimulationCard from './withdrawalSimulationCard'
 
 
 export function InvestmentTabs() {
   const { t } = useTranslation('common')
   return (
     <Tabs defaultValue="accumulation">
-      <TabsList className="grid grid-cols-1 mb-32 md:mb-4 md:grid-cols-4 gap-1 bg-transparent md:bg-muted md:gap-2">
+      <TabsList className="grid grid-cols-1 mb-36 md:mb-4 md:grid-cols-5 gap-1 bg-transparent md:bg-muted md:gap-2">
         <TabsTrigger value="accumulation" className="data-[state=active]:bg-muted md:data-[state=active]:bg-[#ffffff]">{t("tags_title.accumulation_investment_simulation")}</TabsTrigger>
         <TabsTrigger value="rate" className="data-[state=active]:bg-muted md:data-[state=active]:bg-[#ffffff]">{t("tags_title.yield_simulation")}</TabsTrigger>
         <TabsTrigger value="amount" className="data-[state=active]:bg-muted md:data-[state=active]:bg-[#ffffff]">{t("tags_title.monthly_savings_simulation")}</TabsTrigger>
         <TabsTrigger value="horizon" className="data-[state=active]:bg-muted md:data-[state=active]:bg-[#ffffff]">{t("tags_title.accumulation_period_simulation")}</TabsTrigger>
+        <TabsTrigger value="withdrawal" className="data-[state=active]:bg-muted md:data-[state=active]:bg-[#ffffff]">{t("tags_title.withdrawal_simulation")}</TabsTrigger>
       </TabsList>
       <TabsContent value="accumulation" className="mt-4 px-2 md:px-4">
         <FixedInvestmentCard />
@@ -31,9 +33,9 @@ export function InvestmentTabs() {
           </TabsContent>
         )})
       }
-      {/* <TabsContent value="monthlySavings">
-        <MonthlySavingsCard />
-      </TabsContent> */}
+      <TabsContent value="withdrawal" className="mt-4 px-2 md:px-4">
+        <WithdrawalSimulationCard />
+      </TabsContent>
     </Tabs>
   )
 }

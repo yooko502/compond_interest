@@ -4,7 +4,8 @@
         "accumulation_investment_simulation": "定投投资计算",
         "yield_simulation": "收益率计算",
         "monthly_savings_simulation": "每月存款金额计算",
-        "accumulation_period_simulation": "定投期间计算"
+        "accumulation_period_simulation": "定投期间计算",
+        "withdrawal_simulation": "提取投资额计算"
     },
     "tags_detail": {
         "cost_in_the_future": "未来资产预测",
@@ -22,7 +23,16 @@
         "number_increase": "增额年数",
         "monney": "元",
         "years": "年",
-        "percent": "%"
+        "percent": "%",
+        "withdrawal_simulation": "提取投资额",
+        "withdrawal_simulation_detail": "我们来模拟一下提款开始年龄和初始投资金额吧！",
+        "withdrawal_simulation_method_title": "请选择模拟提现方式",
+        "how_many_years": "可取款年数",
+        "initial_amount": "必要的初始资金",
+        "withdrawable_amount": "可每月取款金额",
+        "initial_balance": "金融资产额",
+        "monthly_withdrawal": "可每月取款金额",
+        "withdrawal_years": "可取款年数"
     },
     "button": {
         "calculate": "计算"
@@ -37,6 +47,11 @@
         "investment_principal": "投资本金",
         "principal_increased": "累计本金及收益",
         "service_notice": "使用须知",
-        "calculated_figures_notice": "模拟计算的结果仅供参考，不代表也不保证未来市场环境变化和投资收益。计算结果未考虑税费、手续费等相关费用。"
+        "calculated_figures_notice": "模拟计算的结果仅供参考，不代表也不保证未来市场环境变化和投资收益。计算结果未考虑税费、手续费等相关费用。",
+        "invest": "持续投资",
+        "no_invest": "不再投资",
+        "monthly": "月",
+        "all_amount": "资产额",
+        "unit_monthly": "月"
     }
 }
