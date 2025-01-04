@@ -1,9 +1,9 @@
+"use client"
+
 import { withdrawalSimulationChartProps, withdrawalSimulationMonthlyType } from "@/app/utils/types"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader } from "@/components/ui/card"
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import { BadgeInfo } from "lucide-react"
-import moment from "moment"
-import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts"
 
