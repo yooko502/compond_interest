@@ -23,8 +23,10 @@ import { Label } from "@/components/ui/label"
 import { useTranslation } from "react-i18next"
 import { Separator } from "@/components/ui/separator"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import '../styles.css';
 import { useEffect, useState } from "react"
+import { useWithdrawalSimulation } from "../hooks/useWithdrawalSimulation"
+import { withDrawalSimulationFormType } from "../utils/types"
+import { WithdrawalSimulationChart } from "./charts/withdrawalSimulationChart"
 
 
 const WithdrawalFormSchema = z.object({
@@ -55,6 +57,7 @@ export default function WithdrawalSimulationCard() {
             years: "10"
         },
     })
+    const [formData, setformData] = useState<withDrawalSimulationFormType | null>(null)
     const onSubmit = (values: z.infer<typeof WithdrawalFormSchema>) => {
         switch (type) {
             case "how_many_years":
@@ -69,8 +72,13 @@ export default function WithdrawalSimulationCard() {
             default:
                 break
         }
-        console.log(values)
+        const newValues = {...values, annual_return: values.annual_return / 100}
+        setformData(newValues)
+        console.log(newValues)
+
     }
+
+    const {chartData, showChart, setShowChart} = useWithdrawalSimulation(formData, type)
 
     useEffect(() => {
         switch (type) {
@@ -115,7 +123,7 @@ export default function WithdrawalSimulationCard() {
                 <Label >{t("tags_detail.withdrawal_simulation_method_title")}</Label>
                 <RadioGroup
                     defaultValue="how_many_years"
-                    onValueChange={(value) => setType(value)}
+                    onValueChange={(value) => {setType(value); setShowChart(false)}}
                     className="mb-36"
                 >
                     <div className="flex items-center space-x-2">
@@ -201,6 +209,19 @@ export default function WithdrawalSimulationCard() {
                         <Button type="submit" className="bg-primary-950">{t("button.calculate")}</Button>
                     </form>
                 </Form>
+                {
+                    showChart ?
+                        <div className="p-5">
+                            <WithdrawalSimulationChart
+                                monthly_data={chartData?.monthly_data || []}
+                                initial_balance={chartData?.initial_balance || 0}
+                                invest_years={chartData?.invest_years || 0}
+                                type={type}
+                                monthly_withdrawal={chartData?.monthly_withdrawal || 0}
+                                no_invest={chartData?.no_invest || 0}
+                            />
+                        </div> : null
+                }
             </CardContent>
         </Card>
     )

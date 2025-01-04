@@ -5,7 +5,7 @@
         "yield_simulation": "Yield simulation",
         "monthly_savings_simulation": "Monthly savings simulation",
         "accumulation_period_simulation": "Accumulation period simulation",
-        "withdrawal_simulation": "取り崩しシミュレーション"
+        "withdrawal_simulation": "Withdrawal Simulation"
     },
     "tags_detail": {
         "cost_in_the_future": "I want to know how much it will cost in the future",
@@ -24,15 +24,15 @@
         "monney": "dollars",
         "years": "years",
         "percent": "%",
-        "withdrawal_simulation": "取り崩し",
-        "withdrawal_simulation_detail": "取り崩し開始年齢や、初期投資額などを想定し、シミュレーションしてみましょう！",
-        "withdrawal_simulation_method_title": "取り崩しシミュレーション方法を選択してください",
-        "how_many_years": "何年間取り崩し",
-        "initial_amount": "取り崩し可能額",
-        "withdrawable_amount": "必要な初期投資額",
-        "initial_balance": "金融資産額",
-        "monthly_withdrawal": "毎月の取り崩し額",
-        "withdrawal_years": "取り崩し年数"
+        "withdrawal_simulation": "withdrawal",
+        "withdrawal_simulation_detail": "Let's run a simulation based on factors such as the age at which you will start withdrawing funds and the amount of your initial investment!",
+        "withdrawal_simulation_method_title": "Please select the withdrawal simulation method",
+        "how_many_years": "How many years have you withdrawn money?",
+        "initial_amount": "Required initial investment amount",
+        "withdrawable_amount": "Withdrawable amount",
+        "initial_balance": "Financial assets amount",
+        "monthly_withdrawal": "Monthly withdrawal amount",
+        "withdrawal_years": "Number of years of withdrawal"
     },
     "button": {
         "calculate": "Calculate"
@@ -47,6 +47,11 @@
         "investment_principal": "Investment dollars",
         "principal_increased": "Principal amount + Increased amount",
         "service_notice": "Important points to note when using this service",
-        "calculated_figures_notice": "The calculated figures are merely simulations and do not indicate or guarantee future market fluctuations or investment results, etc. Also, taxes, fees, expenses, etc. are not taken into consideration."
+        "calculated_figures_notice": "The calculated figures are merely simulations and do not indicate or guarantee future market fluctuations or investment results, etc. Also, taxes, fees, expenses, etc. are not taken into consideration.",
+        "invest": "If you invest",
+        "no_invest": "Without investment",
+        "monthly": "month",
+        "all_amount": "Asset amount",
+        "unit_monthly": "months"
     }
 }
