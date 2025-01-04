@@ -54,10 +54,10 @@ export default function WithdrawalSimulationCard() {
     const form = useForm<z.infer<typeof WithdrawalFormSchema>>({
         resolver: zodResolver(WithdrawalFormSchema),
         defaultValues: {
-            annual_return: "10",
-            initial_balance: "1000",
-            monthly_withdrawal: "10",
-            years: "10"
+            annual_return: 10,
+            initial_balance: 1000,
+            monthly_withdrawal: 10,
+            years: 10
         },
     })
     const [formData, setformData] = useState<withDrawalSimulationFormType | null>(null)
