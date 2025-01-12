@@ -91,7 +91,7 @@ export function CommonChart(props: FixedInvestmentChartParams) {
                             {t('chart.asset_amount')}
                         </span>
                         <span className="text-lg font-bold leading-none sm:text-3xl">
-                            {props.totalPrincipal}<span className="text-xs font-bold leading-none sm:text-xs">{t('tags_detail.monney')}</span>
+                            {props.finalBalance}<span className="text-xs font-bold leading-none sm:text-xs">{t('tags_detail.monney')}</span>
                         </span>
                     </button>
                     <button
@@ -101,7 +101,7 @@ export function CommonChart(props: FixedInvestmentChartParams) {
                             {t('chart.investment_principal')}
                         </span>
                         <span className="text-lg font-bold leading-none sm:text-3xl">
-                            {props.finalBalance}<span className="text-xs font-bold leading-none sm:text-xs">{t('tags_detail.monney')}</span>
+                            {props.totalPrincipal}<span className="text-xs font-bold leading-none sm:text-xs">{t('tags_detail.monney')}</span>
                         </span>
                     </button>
                 </div>
